@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SCOI_lab_1
 {
     public partial class Form1 : Form
     {
         List<Layer> layers = new List<Layer>();
-        private int highestPercentageReached = 0;
+        List<int> Diagramm;
         public Form1()
         {
             InitializeComponent();
@@ -22,6 +23,13 @@ namespace SCOI_lab_1
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
             InitializeBackgroundWorker();
+
+            chart1.Series[0].XValueMember = "Brightness";
+            chart1.Series[0].YValueMembers = "Amount";
+
+            var canvas1 = new MyCanvas();
+            panel1.Controls.Add(canvas1);
+            canvas1.Dock = DockStyle.Fill;
         }
         private void InitializeBackgroundWorker()
         {
@@ -257,11 +265,13 @@ namespace SCOI_lab_1
 
             layers.Remove(desired_layer);
 
-            layers.Last().cmb.Enabled = false;
-            layers.Last().cmb.SelectedIndex = 0;
-            if (layers.Count > 1)
-                layers[layers.Count - 2].cmb.Enabled = true;
-
+            if (layers.Count > 0)
+            {
+                layers.Last().cmb.Enabled = false;
+                layers.Last().cmb.SelectedIndex = 0;
+                if (layers.Count > 1)
+                    layers[layers.Count - 2].cmb.Enabled = true;
+            }
             RefreshTableLayoutPanel();
         }
         private void UpButton_Click(object sender, EventArgs e)
@@ -337,8 +347,6 @@ namespace SCOI_lab_1
             this.button3.Enabled = false;
             this.progressBar1.Value = 0;
 
-            highestPercentageReached = 0;
-
             List<LayerValue> tmp = new List<LayerValue>();
             foreach (var item in layers)
                 tmp.Add(new LayerValue(item));
@@ -364,32 +372,6 @@ namespace SCOI_lab_1
 
                     result.LUBitsAndChange(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B), layers[i].cmb);
 
-                    //switch (layers[i].cmb)
-                    //{
-                    //    case 0:
-                    //        break;
-                    //    case 1:
-                    //        result.Add(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B));
-                    //        break;
-                    //    case 2:
-                    //        result.Subtract(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B));
-                    //        break;
-                    //    case 3:
-                    //        result.Multiply(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B));
-                    //        break;
-                    //    case 4:
-                    //        result.AverageFrom(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B));
-                    //        break;
-                    //    case 5:
-                    //        result.Min(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B));
-                    //        break;
-                    //    case 6:
-                    //        result.Max(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B));
-                    //        break;
-                    //    case 7:
-                    //        result.Overlay(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B));
-                    //        break;
-                    //}
                     worker.ReportProgress((int)((float)(layers.Count - 1 - i) / (layers.Count - 1) * 100));
                 }
                 if(pictureBox1.Image != null)
@@ -417,9 +399,15 @@ namespace SCOI_lab_1
             }
             else
             {
-                MessageBox.Show("Обработка завершена");
-                this.progressBar1.Value = 100;
                 this.button3.Enabled = true;
+                if (layers.Any())
+                {
+                    MessageBox.Show("Обработка завершена");
+                    this.progressBar1.Value = 100;
+
+                    chart1.DataSource = MyImage.BarGraphData(pictureBox1.Image);
+                    chart1.DataBind();
+                }
             }
 
             this.button2.Enabled = true;
