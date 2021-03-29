@@ -28,8 +28,15 @@ namespace SCOI_lab_1
             chart1.Series[0].YValueMembers = "Amount";
 
             var canvas1 = new MyCanvas();
+            canvas1.Name = "canvas1";
+            canvas1.pchB = pictureBox1;
+            canvas1.chrt = chart1;
+            canvas1.cmbb = comboBox1;
             panel1.Controls.Add(canvas1);
             canvas1.Dock = DockStyle.Fill;
+
+            comboBox1.SelectedIndex = 0;
+            comboBox1.SelectedIndexChanged += new EventHandler(this.CBSelectedIndexChanged);
         }
         private void InitializeBackgroundWorker()
         {
@@ -209,7 +216,10 @@ namespace SCOI_lab_1
 
             }
         }
-
+        private void CBSelectedIndexChanged(object sender, EventArgs e)
+        {
+            (panel1.Controls[0] as MyCanvas).cmbbChange = true;
+        }
         private void TrackBar_ValueChange(object sender, EventArgs e)
         {
             // Получаем наш трекбар
@@ -407,6 +417,8 @@ namespace SCOI_lab_1
 
                     chart1.DataSource = MyImage.BarGraphData(pictureBox1.Image);
                     chart1.DataBind();
+
+                    (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
                 }
             }
 
@@ -446,6 +458,14 @@ namespace SCOI_lab_1
                     }
                 }
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            (panel1.Controls[0] as MyCanvas).points.Clear();
+            (panel1.Controls[0] as MyCanvas).points.AddRange(new Point[] { new Point(0,0), new Point(255,255) });
+
+            (panel1.Controls[0] as MyCanvas).cmbbChange = true;
         }
     }
 }

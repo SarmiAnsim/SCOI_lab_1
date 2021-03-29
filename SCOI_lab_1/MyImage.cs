@@ -89,13 +89,13 @@ namespace SCOI_lab_1
             IntPtr ptr = bmpData.Scan0;
 
             int bytes = Math.Abs(bmpData.Stride) * Bimage.Height;
-            byte[] bgrAValues = new byte[bytes];
+            byte[] AbgrValues = new byte[bytes];
 
-            System.Runtime.InteropServices.Marshal.Copy(ptr, bgrAValues, 0, bytes);
+            System.Runtime.InteropServices.Marshal.Copy(ptr, AbgrValues, 0, bytes);
 
-            for (int counter = 1; counter < bgrAValues.Length; counter += 4)
+            for (int counter = 0; counter < AbgrValues.Length; counter += 4)
             {
-                int c = (bgrAValues[counter] + bgrAValues[counter + 1] + bgrAValues[counter + 2]) / 3;
+                int c = (AbgrValues[counter] + AbgrValues[counter + 1] + AbgrValues[counter + 2]) / 3;
                 GraphData.Rows[c][1] = (int)GraphData.Rows[c][1] + 1;
             }
 
@@ -103,6 +103,47 @@ namespace SCOI_lab_1
             Bimage.Dispose();
 
             return GraphData;
+        }
+        public static (DataTable, Image) ProcessAndBarGraphData(Image image, List<int> func)
+        {
+            DataTable GraphData = new DataTable("GD");
+            GraphData.Columns.Add("Brightness", typeof(int));
+            GraphData.Columns.Add("Amount", typeof(int));
+            for (int i = 0; i < 256; ++i)
+            {
+                DataRow row = GraphData.NewRow();
+                row[0] = i;
+                row[1] = 0;
+                GraphData.Rows.Add(row);
+            }
+
+            Bitmap Bimage = new Bitmap(image);
+            image.Dispose();
+            Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
+            BitmapData bmpData =
+                Bimage.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            int bytes = Math.Abs(bmpData.Stride) * Bimage.Height;
+            byte[] AbgrValues = new byte[bytes];
+
+            System.Runtime.InteropServices.Marshal.Copy(ptr, AbgrValues, 0, bytes);
+
+            for (int counter = 0; counter < AbgrValues.Length; counter += 4)
+            {
+                AbgrValues[counter] = (byte)func[AbgrValues[counter]];
+                AbgrValues[counter + 1] = (byte)func[AbgrValues[counter + 1]];
+                AbgrValues[counter + 2] = (byte)func[AbgrValues[counter + 2]];
+
+                int c = (AbgrValues[counter] + AbgrValues[counter + 1] + AbgrValues[counter + 2]) / 3;
+                GraphData.Rows[c][1] = (int)GraphData.Rows[c][1] + 1;
+            }
+            System.Runtime.InteropServices.Marshal.Copy(AbgrValues, 0, ptr, bytes);
+
+            Bimage.UnlockBits(bmpData);
+
+            return (GraphData, Bimage);
         }
         public void BarGraphDataUpdate()
         {
@@ -114,16 +155,16 @@ namespace SCOI_lab_1
             IntPtr ptr = bmpData.Scan0;
 
             int bytes = Math.Abs(bmpData.Stride) * Bimage.Height;
-            byte[] bgrAValues = new byte[bytes];
+            byte[] AbgrValues = new byte[bytes];
 
-            System.Runtime.InteropServices.Marshal.Copy(ptr, bgrAValues, 0, bytes);
+            System.Runtime.InteropServices.Marshal.Copy(ptr, AbgrValues, 0, bytes);
 
             foreach (DataRow row in GraphData.Rows)
                 row[1] = 0;
 
-            for (int counter = 1; counter < bgrAValues.Length; counter += 4)
+            for (int counter = 1; counter < AbgrValues.Length; counter += 4)
             {
-                int c = (bgrAValues[counter] + bgrAValues[counter + 1] + bgrAValues[counter + 2]) / 3;
+                int c = (AbgrValues[counter] + AbgrValues[counter + 1] + AbgrValues[counter + 2]) / 3;
                 GraphData.Rows[c][1] = (int)GraphData.Rows[c][1] + 1;
             }
 
