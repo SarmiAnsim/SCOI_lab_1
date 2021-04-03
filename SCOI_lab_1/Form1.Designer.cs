@@ -45,6 +45,12 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.BinarizeButton = new System.Windows.Forms.Button();
+            this.BinarCmB = new System.Windows.Forms.ComboBox();
+            this.BinarGrayCHB = new System.Windows.Forms.CheckBox();
+            this.BinarLoad = new System.Windows.Forms.Button();
+            this.BinarPchB = new System.Windows.Forms.PictureBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -60,6 +66,8 @@
             this.splitContainer2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BinarPchB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
@@ -124,6 +132,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Multiline = true;
@@ -275,16 +284,88 @@
             this.chart1.Margin = new System.Windows.Forms.Padding(1);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            series1.BorderColor = System.Drawing.Color.White;
+            series1.BorderColor = System.Drawing.Color.Black;
             series1.BorderWidth = 0;
             series1.ChartArea = "ChartArea1";
             series1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            series1.CustomProperties = "PointWidth=1";
             series1.LabelBackColor = System.Drawing.Color.White;
+            series1.LabelBorderColor = System.Drawing.Color.White;
+            series1.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series1.LabelBorderWidth = 0;
             series1.Name = "Series1";
+            series1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(347, 230);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "Гистограмма";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabPage3.Controls.Add(this.BinarizeButton);
+            this.tabPage3.Controls.Add(this.BinarCmB);
+            this.tabPage3.Controls.Add(this.BinarGrayCHB);
+            this.tabPage3.Controls.Add(this.BinarLoad);
+            this.tabPage3.Controls.Add(this.BinarPchB);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(349, 605);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Бинаризация";
+            // 
+            // BinarizeButton
+            // 
+            this.BinarizeButton.Enabled = false;
+            this.BinarizeButton.Location = new System.Drawing.Point(3, 567);
+            this.BinarizeButton.Name = "BinarizeButton";
+            this.BinarizeButton.Size = new System.Drawing.Size(343, 35);
+            this.BinarizeButton.TabIndex = 4;
+            this.BinarizeButton.Text = "Бинаризировать";
+            this.BinarizeButton.UseVisualStyleBackColor = true;
+            this.BinarizeButton.Click += new System.EventHandler(this.BinarizeButton_Click);
+            // 
+            // BinarCmB
+            // 
+            this.BinarCmB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.BinarCmB.Enabled = false;
+            this.BinarCmB.FormattingEnabled = true;
+            this.BinarCmB.Items.AddRange(new object[] {
+            "Критерий Гаврилова",
+            "Критерий Отсу",
+            "Критерий Ниблека"});
+            this.BinarCmB.Location = new System.Drawing.Point(3, 264);
+            this.BinarCmB.Name = "BinarCmB";
+            this.BinarCmB.Size = new System.Drawing.Size(343, 24);
+            this.BinarCmB.TabIndex = 3;
+            // 
+            // BinarGrayCHB
+            // 
+            this.BinarGrayCHB.Location = new System.Drawing.Point(145, 13);
+            this.BinarGrayCHB.Name = "BinarGrayCHB";
+            this.BinarGrayCHB.Size = new System.Drawing.Size(201, 38);
+            this.BinarGrayCHB.TabIndex = 2;
+            this.BinarGrayCHB.Text = "Привести изображение к градациям серого";
+            this.BinarGrayCHB.UseVisualStyleBackColor = true;
+            // 
+            // BinarLoad
+            // 
+            this.BinarLoad.Location = new System.Drawing.Point(3, 16);
+            this.BinarLoad.Name = "BinarLoad";
+            this.BinarLoad.Size = new System.Drawing.Size(136, 30);
+            this.BinarLoad.TabIndex = 1;
+            this.BinarLoad.Text = "Начать";
+            this.BinarLoad.UseVisualStyleBackColor = true;
+            this.BinarLoad.Click += new System.EventHandler(this.BinarLoad_Click);
+            // 
+            // BinarPchB
+            // 
+            this.BinarPchB.Location = new System.Drawing.Point(2, 57);
+            this.BinarPchB.Name = "BinarPchB";
+            this.BinarPchB.Size = new System.Drawing.Size(347, 201);
+            this.BinarPchB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BinarPchB.TabIndex = 0;
+            this.BinarPchB.TabStop = false;
             // 
             // splitContainer3
             // 
@@ -321,6 +402,8 @@
             this.splitContainer2.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.BinarPchB)).EndInit();
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
@@ -347,6 +430,12 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.PictureBox BinarPchB;
+        private System.Windows.Forms.CheckBox BinarGrayCHB;
+        private System.Windows.Forms.Button BinarLoad;
+        private System.Windows.Forms.ComboBox BinarCmB;
+        private System.Windows.Forms.Button BinarizeButton;
     }
 }
 

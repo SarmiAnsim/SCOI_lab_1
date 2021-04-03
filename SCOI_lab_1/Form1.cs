@@ -14,7 +14,6 @@ namespace SCOI_lab_1
     public partial class Form1 : Form
     {
         List<Layer> layers = new List<Layer>();
-        List<int> Diagramm;
         public Form1()
         {
             InitializeComponent();
@@ -37,6 +36,17 @@ namespace SCOI_lab_1
 
             comboBox1.SelectedIndex = 0;
             comboBox1.SelectedIndexChanged += new EventHandler(this.CBSelectedIndexChanged);
+
+            tableLayoutPanel1.AllowDrop = true;
+            tableLayoutPanel1.DragDrop += new DragEventHandler(this.TLP_DragDrop);
+            tableLayoutPanel1.DragEnter += new DragEventHandler(this.TLP_DragEnter);
+
+            pictureBox1.AllowDrop = true;
+            pictureBox1.MouseDown += new MouseEventHandler(this.PCHB_MouseDown);
+            pictureBox1.DragDrop += new DragEventHandler(this.PCHB_DragDrop);
+            pictureBox1.DragEnter += new DragEventHandler(this.PCHB_DragEnter);
+
+            tabControl1.SelectedIndexChanged += new EventHandler(this.TabControl_SelectedIndexChanged);
         }
         private void InitializeBackgroundWorker()
         {
@@ -216,9 +226,130 @@ namespace SCOI_lab_1
 
             }
         }
+
+        private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(tabControl1.SelectedIndex == 1)
+                (panel1.Controls[0] as MyCanvas).AllRefreshPoc();
+        }
+        private void TLP_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop) || e.Data.GetDataPresent(typeof(Bitmap)))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        private void TLP_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Bitmap)))
+            {
+                var img = e.Data.GetData(typeof(Bitmap)) as Image;
+                layers.Add(new Layer(new Bitmap(img), tableLayoutPanel1.Width));
+
+                layers.Last().cmb.Enabled = false;
+                if (layers.Count > 1)
+                    layers[layers.Count - 2].cmb.Enabled = true;
+
+                layers.Last().tckb.ValueChanged += new System.EventHandler(this.TrackBar_ValueChange);
+                layers.Last().tckb.MouseWheel += new MouseEventHandler(trackBar_MouseWheel);
+                layers.Last().Rchnl.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+                layers.Last().Gchnl.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+                layers.Last().Bchnl.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+                layers.Last().clsbtn.Click += new System.EventHandler(this.CloseButton_Click);
+                layers.Last().cmb.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
+                layers.Last().up.Click += new System.EventHandler(this.UpButton_Click);
+                layers.Last().dwn.Click += new System.EventHandler(this.DownButton_Click);
+
+                tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 117));
+                ++tableLayoutPanel1.RowCount;
+                tableLayoutPanel1.Controls.Add(layers.Last().pctb, 0, tableLayoutPanel1.RowCount - 1);
+                tableLayoutPanel1.Controls.Add(layers.Last().FLP, 1, tableLayoutPanel1.RowCount - 1);
+            }
+            else
+            try
+            {
+                String[] a = (String[])e.Data.GetData(DataFormats.FileDrop);
+
+                foreach(string path in a)
+                {
+                    layers.Add(new Layer(Image.FromFile(path), tableLayoutPanel1.Width));
+
+                    layers.Last().cmb.Enabled = false;
+                    if (layers.Count > 1)
+                        layers[layers.Count - 2].cmb.Enabled = true;
+
+                    layers.Last().tckb.ValueChanged += new System.EventHandler(this.TrackBar_ValueChange);
+                    layers.Last().tckb.MouseWheel += new MouseEventHandler(trackBar_MouseWheel);
+                    layers.Last().Rchnl.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+                    layers.Last().Gchnl.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+                    layers.Last().Bchnl.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+                    layers.Last().clsbtn.Click += new System.EventHandler(this.CloseButton_Click);
+                    layers.Last().cmb.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
+                    layers.Last().up.Click += new System.EventHandler(this.UpButton_Click);
+                    layers.Last().dwn.Click += new System.EventHandler(this.DownButton_Click);
+
+                    tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 117));
+                    ++tableLayoutPanel1.RowCount;
+                    tableLayoutPanel1.Controls.Add(layers.Last().pctb, 0, tableLayoutPanel1.RowCount - 1);
+                    tableLayoutPanel1.Controls.Add(layers.Last().FLP, 1, tableLayoutPanel1.RowCount - 1);
+                }
+            }
+            catch (OutOfMemoryException ex)
+            {
+                MessageBox.Show("Ошибка чтения картинки");
+                return;
+            }
+        }
+        private void PCHB_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(tabControl1.SelectedIndex == 0)
+            {
+                var pictureBox = (PictureBox)sender;
+                pictureBox.DoDragDrop(pictureBox.Image, DragDropEffects.Move);
+            }
+        }
+        private void PCHB_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        private void PCHB_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                String[] a = (String[])e.Data.GetData(DataFormats.FileDrop);
+
+                foreach (string path in a)
+                {
+                    if(pictureBox1.Image != null)
+                        pictureBox1.Image.Dispose();
+                    pictureBox1.Image = Image.FromFile(path);
+                }
+
+                (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
+                if(tabControl1.SelectedIndex == 1)
+                    (panel1.Controls[0] as MyCanvas).AllRefreshPoc();
+            }
+            catch (OutOfMemoryException ex)
+            {
+                MessageBox.Show("Ошибка чтения картинки");
+                return;
+            }
+        }
         private void CBSelectedIndexChanged(object sender, EventArgs e)
         {
-            (panel1.Controls[0] as MyCanvas).cmbbChange = true;
+            if (tabControl1.SelectedIndex == 1)
+                (panel1.Controls[0] as MyCanvas).AllRefreshPoc();
         }
         private void TrackBar_ValueChange(object sender, EventArgs e)
         {
@@ -335,7 +466,6 @@ namespace SCOI_lab_1
             else
                 desired_layer.tckb.Enabled = true;
         }
-
         private void RefreshTableLayoutPanel()
         {
             tableLayoutPanel1.RowStyles.Clear();
@@ -350,7 +480,6 @@ namespace SCOI_lab_1
                 tableLayoutPanel1.Controls.Add(item.FLP, 1, tableLayoutPanel1.RowCount - 1);
             }
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             this.button2.Enabled = false;
@@ -363,7 +492,6 @@ namespace SCOI_lab_1
 
             backgroundWorker1.RunWorkerAsync(tmp);
         }
-
         private void GetTheResult(List<LayerValue> layers, BackgroundWorker worker, DoWorkEventArgs e)
         {
             if(layers.Any())
@@ -380,7 +508,7 @@ namespace SCOI_lab_1
                     G = layers[i].Gchnl ? 1 : 0;
                     B = layers[i].Bchnl ? 1 : 0;
 
-                    result.LUBitsAndChange(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B), layers[i].cmb);
+                    result.CPP_LUBitsAndChange(MyImage.SetImgChannelValue(layers[i].image, (1 - (float)layers[i].tckb / 100), R, G, B), layers[i].cmb);
 
                     worker.ReportProgress((int)((float)(layers.Count - 1 - i) / (layers.Count - 1) * 100));
                 }
@@ -391,7 +519,6 @@ namespace SCOI_lab_1
             else
                 MessageBox.Show("Добавьте слои!");
         }
-
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -412,10 +539,10 @@ namespace SCOI_lab_1
                 this.button3.Enabled = true;
                 if (layers.Any())
                 {
-                    MessageBox.Show("Обработка завершена");
+                    //MessageBox.Show("Обработка завершена");
                     this.progressBar1.Value = 100;
 
-                    chart1.DataSource = MyImage.BarGraphData(pictureBox1.Image);
+                    chart1.DataSource = MyImage.CPU_BarGraphData(pictureBox1.Image);
                     chart1.DataBind();
 
                     (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
@@ -424,12 +551,10 @@ namespace SCOI_lab_1
 
             this.button2.Enabled = true;
         }
-
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             this.progressBar1.Value = e.ProgressPercentage;
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             if (pictureBox1.Image != null) //если в pictureBox есть изображение
@@ -459,13 +584,52 @@ namespace SCOI_lab_1
                 }
             }
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             (panel1.Controls[0] as MyCanvas).points.Clear();
             (panel1.Controls[0] as MyCanvas).points.AddRange(new Point[] { new Point(0,0), new Point(255,255) });
 
-            (panel1.Controls[0] as MyCanvas).cmbbChange = true;
+            //(panel1.Controls[0] as MyCanvas).cmbbChange = true;
+            (panel1.Controls[0] as MyCanvas).RefreshValues();
+            (panel1.Controls[0] as MyCanvas).AllRefreshPoc();
+        }
+
+        private void BinarLoad_Click(object sender, EventArgs e)
+        {
+            if (BinarPchB.Image != null)
+                BinarPchB.Image.Dispose();
+            else if(pictureBox1.Image != null)
+            {
+                BinarCmB.SelectedIndex = 0;
+                BinarCmB.Enabled = true;
+                BinarizeButton.Enabled = true;
+                (sender as Button).Text = "Изменить";
+            }
+            if (pictureBox1.Image != null)
+                if (BinarGrayCHB.Checked)
+                    BinarPchB.Image = MyImage.CastingToGray(pictureBox1.Image);
+                else
+                    BinarPchB.Image = new Bitmap(pictureBox1.Image);
+
+        }
+
+        private void BinarizeButton_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image.Dispose();
+            switch (BinarCmB.SelectedIndex)
+            {
+                case 0:
+                    pictureBox1.Image = MyImage.CPU_GlobalBinarize(BinarPchB.Image, 0);
+                    break;
+                case 1:
+                    pictureBox1.Image = MyImage.CPU_GlobalBinarize(BinarPchB.Image, 1);
+                    break;
+                case 2:
+                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 0);
+                    break;
+            }
+
+            (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
         }
     }
 }

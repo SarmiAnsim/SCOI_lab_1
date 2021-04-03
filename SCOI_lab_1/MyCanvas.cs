@@ -6,9 +6,11 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Timer = System.Windows.Forms.Timer;
 
 namespace SCOI_lab_1
 {
@@ -21,10 +23,16 @@ namespace SCOI_lab_1
         public bool cmbbChange = false;
         List<int> iter = new List<int>() { 0 };
 
+        List<int> Values = new List<int>();
+
         public Image img { get; set; }
         public PictureBox pchB { get; set; }
         public Chart chrt { get; set; }
         public ComboBox cmbb { get; set; }
+
+
+        static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        static CancellationToken token = cancelTokenSource.Token;
 
         //Таймер для ее обновления
         private Timer timer;
@@ -133,9 +141,6 @@ namespace SCOI_lab_1
         }
         private void MyCanvas_Paint(object sender, PaintEventArgs e)
         {
-
-            //Всегда рисуем зеленый кружок под мышкой, чтобы видеть как будет рисоватся линия.
-
             var mouse_pos = PointToClient(MousePosition);
             int r = 2;
             g_layer2.Clear(Color.FromArgb(0, 0, 0, 0));
@@ -161,8 +166,7 @@ namespace SCOI_lab_1
 
                 }
 
-            List<int> Values = new List<int>();
-
+            Values.Clear();
             switch (cmbb.SelectedIndex)
             {
                 case 0:
@@ -216,15 +220,14 @@ namespace SCOI_lab_1
 
             if ((painting_mode || cmbbChange) && img != null && chrt != null)
             {
-
                 (DataTable, Image) result;
 
-                if (img.Width > 300)
+                if (img.Width > 600)
                 {
-                    Size Probe = new Size(300, (int)Math.Round((decimal)img.Height * ((decimal)300.0/img.Width), 0));
-                    result = MyImage.ProcessAndBarGraphData(new Bitmap(img, Probe), Values);
+                    Size Probe = new Size(600, (int)Math.Round((decimal)img.Height * ((decimal)600.0/img.Width), 0));
+                    result = MyImage.CPP_ProcessAndBarGraphData(new Bitmap(img, Probe), Values, new CancellationTokenSource().Token);
                 }
-                else result = MyImage.ProcessAndBarGraphData(new Bitmap(img), Values);
+                else result = MyImage.CPP_ProcessAndBarGraphData(new Bitmap(img), Values, new CancellationTokenSource().Token);
 
                 pchB.Image.Dispose();
                 pchB.Image = result.Item2;
@@ -235,16 +238,115 @@ namespace SCOI_lab_1
 
             if (((!painting_mode && !PaintComplete) || cmbbChange) && img != null && chrt != null)
             {
-                PaintComplete = true;
+                cancelTokenSource.Cancel();
 
-                iter.Add(iter.Last() + 1);
+                cancelTokenSource = new CancellationTokenSource();
+                token = cancelTokenSource.Token;
 
-                ProcessAsync(new Bitmap(img), Values, iter.Last());
+                RefreshPoc(token);
             }
         }
-        private async void ProcessAsync(Image img, List<int> list, int i)
+        public void RefreshValues()
         {
-            var rez = await Task.Run(() => ProcessAndBarGraphData(img, list));
+            points = points.OrderBy(p => p.X).ToList();
+            for (int i = 0; i < points.Count - 1; ++i)
+                if (points[i].X == points[i + 1].X)
+                {
+
+                    if (currentPoint == points[i + 1])
+                    {
+                        Point tmp = new Point(points[i + 1].X + 1, points[i + 1].Y);
+                        currentPoint = new Point(tmp.X, tmp.Y);
+                        points[i + 1] = tmp;
+                    }
+                    else
+                    {
+                        Point tmp = new Point(points[i].X - 1, points[i].Y);
+                        currentPoint = new Point(tmp.X, tmp.Y);
+                        points[i] = tmp;
+                    }
+
+                }
+
+            Values.Clear();
+            switch (cmbb.SelectedIndex)
+            {
+                case 0:
+                    for (int i = 0; i < points.Count - 1; ++i)
+                    {
+                        Point one = PointToMine(points[i]);
+                        Point two = PointToMine(points[i + 1]);
+                        g_layer2.DrawLine(pen, one, two);
+                    }
+                    for (int i = 0; i < points.Count - 1; ++i)
+                    {
+                        float dy = (float)(points[i + 1].Y - points[i].Y) / (points[i + 1].X - points[i].X);
+                        for (int v = 0; v < points[i + 1].X - points[i].X; ++v)
+                        {
+                            Values.Add(points[i].Y + (int)(dy * v));
+                        }
+                    }
+                    Values.Add(points[points.Count - 1].Y);
+                    break;
+
+                case 1:
+                    QuadProc(Values);
+                    break;
+                case 2:
+                    CubProc(Values);
+                    break;
+                case 3:
+                    LagProc(Values);
+                    break;
+                case 4:
+                    NewtProc(Values);
+                    break;
+                case 5:
+                    if (points.Count > 13)
+                        for (int i = 1; i < points.Count - 12; ++i)
+                            points.RemoveAt(i);
+                    BezierProc(Values);
+                    break;
+            }
+        }
+        public void AllRefreshPoc()
+        {
+            if(Values.Count == 256)
+            {
+               (DataTable, Image) result;
+               
+               if (img.Width > 600)
+               {
+                   Size Probe = new Size(600, (int)Math.Round((decimal)img.Height * ((decimal)600.0 / img.Width), 0));
+                   result = MyImage.CPP_ProcessAndBarGraphData(new Bitmap(img, Probe), Values, new CancellationTokenSource().Token);
+               }
+               else result = MyImage.CPP_ProcessAndBarGraphData(new Bitmap(img), Values, new CancellationTokenSource().Token);
+               
+               pchB.Image.Dispose();
+               pchB.Image = result.Item2;
+               
+               chrt.DataSource = result.Item1;
+               chrt.DataBind();
+
+               cancelTokenSource.Cancel();
+
+               cancelTokenSource = new CancellationTokenSource();
+               token = cancelTokenSource.Token;
+
+               RefreshPoc(token);
+            }
+        }
+        private void RefreshPoc(CancellationToken token)
+        {
+            PaintComplete = true;
+
+            iter.Add(iter.Last() + 1);
+
+            ProcessAsync(new Bitmap(img), new List<int>(Values), iter.Last(), token);
+        }
+        private async void ProcessAsync(Image img, List<int> list, int i, CancellationToken token)
+        {
+            var rez = await Task.Run(() => ProcessAndBarGraphData(img, list, token));
 
             img.Dispose();
 
@@ -261,9 +363,9 @@ namespace SCOI_lab_1
                 iter.Add(0);
             }
         }
-        private (DataTable, Image) ProcessAndBarGraphData(Image img, List<int> list)
+        private (DataTable, Image) ProcessAndBarGraphData(Image img, List<int> list, CancellationToken token)
         {
-            var rezult = MyImage.ProcessAndBarGraphData(new Bitmap(img), list);
+            var rezult = MyImage.CPP_ProcessAndBarGraphData(new Bitmap(img), list, token);
             return rezult;
         }
         private void MyCanvas_MouseUp(object sender, MouseEventArgs e)
