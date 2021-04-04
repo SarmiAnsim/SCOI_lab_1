@@ -625,11 +625,53 @@ namespace SCOI_lab_1
                     pictureBox1.Image = MyImage.CPU_GlobalBinarize(BinarPchB.Image, 1);
                     break;
                 case 2:
-                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 0);
+                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 0, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
+                    break;
+                case 3:
+                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 1, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
+                    break;
+                case 4:
+                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 2, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
+                    break;
+                case 5:
+                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 3, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
                     break;
             }
 
             (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
+
+            this.button3.Enabled = true;
+        }
+
+        private void BinarCmB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch ((sender as ComboBox).SelectedIndex)
+            {
+                case 0:
+                case 1:
+                    BinarNUD1.Enabled = false;
+                    BinarNUD2.Enabled = false;
+                    break;
+                case 2:
+                    BinarNUD2.Maximum = 10;
+                    BinarNUD2.Minimum = -10;
+                    BinarNUD1.Enabled = true;
+                    BinarNUD2.Enabled = true;
+                    break;
+                case 3:
+                    BinarNUD2.Maximum = 0.5m;
+                    BinarNUD2.Minimum = 0.2m;
+                    BinarNUD1.Enabled = true;
+                    BinarNUD2.Enabled = true;
+                    break;
+                case 4:
+                case 5:
+                    BinarNUD2.Maximum = 1;
+                    BinarNUD2.Minimum = 0;
+                    BinarNUD1.Enabled = true;
+                    BinarNUD2.Enabled = true;
+                    break;
+            }
         }
     }
 }

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button3 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
@@ -46,6 +46,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.BinarNUD2 = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.BinarNUD1 = new System.Windows.Forms.NumericUpDown();
             this.BinarizeButton = new System.Windows.Forms.Button();
             this.BinarCmB = new System.Windows.Forms.ComboBox();
             this.BinarGrayCHB = new System.Windows.Forms.CheckBox();
@@ -67,6 +71,8 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BinarNUD2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BinarNUD1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BinarPchB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -273,29 +279,29 @@
             // 
             this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chart1.BackColor = System.Drawing.Color.DimGray;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.MajorGrid.Enabled = false;
-            chartArea1.BackColor = System.Drawing.Color.White;
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea2.AxisX.LabelStyle.Enabled = false;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.AxisY.LabelStyle.Enabled = false;
+            chartArea2.AxisY.MajorGrid.Enabled = false;
+            chartArea2.BackColor = System.Drawing.Color.White;
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
             this.chart1.Location = new System.Drawing.Point(0, 375);
             this.chart1.Margin = new System.Windows.Forms.Padding(1);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            series1.BorderColor = System.Drawing.Color.Black;
-            series1.BorderWidth = 0;
-            series1.ChartArea = "ChartArea1";
-            series1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            series1.CustomProperties = "PointWidth=1";
-            series1.LabelBackColor = System.Drawing.Color.White;
-            series1.LabelBorderColor = System.Drawing.Color.White;
-            series1.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
-            series1.LabelBorderWidth = 0;
-            series1.Name = "Series1";
-            series1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chart1.Series.Add(series1);
+            series2.BorderColor = System.Drawing.Color.Black;
+            series2.BorderWidth = 0;
+            series2.ChartArea = "ChartArea1";
+            series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            series2.CustomProperties = "PointWidth=1";
+            series2.LabelBackColor = System.Drawing.Color.White;
+            series2.LabelBorderColor = System.Drawing.Color.White;
+            series2.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series2.LabelBorderWidth = 0;
+            series2.Name = "Series1";
+            series2.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(347, 230);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "Гистограмма";
@@ -303,6 +309,10 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabPage3.Controls.Add(this.label2);
+            this.tabPage3.Controls.Add(this.BinarNUD2);
+            this.tabPage3.Controls.Add(this.label1);
+            this.tabPage3.Controls.Add(this.BinarNUD1);
             this.tabPage3.Controls.Add(this.BinarizeButton);
             this.tabPage3.Controls.Add(this.BinarCmB);
             this.tabPage3.Controls.Add(this.BinarGrayCHB);
@@ -313,6 +323,82 @@
             this.tabPage3.Size = new System.Drawing.Size(349, 605);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Бинаризация";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(25, 359);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(209, 17);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Чувствительность/усиление ,k";
+            // 
+            // BinarNUD2
+            // 
+            this.BinarNUD2.DecimalPlaces = 5;
+            this.BinarNUD2.Enabled = false;
+            this.BinarNUD2.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.BinarNUD2.Location = new System.Drawing.Point(240, 357);
+            this.BinarNUD2.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.BinarNUD2.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.BinarNUD2.Name = "BinarNUD2";
+            this.BinarNUD2.Size = new System.Drawing.Size(90, 22);
+            this.BinarNUD2.TabIndex = 7;
+            this.BinarNUD2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.BinarNUD2.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(31, 317);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(203, 17);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Сторона квадратной области";
+            // 
+            // BinarNUD1
+            // 
+            this.BinarNUD1.Enabled = false;
+            this.BinarNUD1.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.BinarNUD1.Location = new System.Drawing.Point(240, 315);
+            this.BinarNUD1.Maximum = new decimal(new int[] {
+            1001,
+            0,
+            0,
+            0});
+            this.BinarNUD1.MaximumSize = new System.Drawing.Size(90, 0);
+            this.BinarNUD1.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.BinarNUD1.Name = "BinarNUD1";
+            this.BinarNUD1.ReadOnly = true;
+            this.BinarNUD1.Size = new System.Drawing.Size(90, 22);
+            this.BinarNUD1.TabIndex = 5;
+            this.BinarNUD1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.BinarNUD1.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left;
+            this.BinarNUD1.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
             // 
             // BinarizeButton
             // 
@@ -333,11 +419,15 @@
             this.BinarCmB.Items.AddRange(new object[] {
             "Критерий Гаврилова",
             "Критерий Отсу",
-            "Критерий Ниблека"});
+            "Критерий Ниблека",
+            "Критерий Сауволы",
+            "Критерий Кристиана Вульфа",
+            "Критерий Брэдли-Рота"});
             this.BinarCmB.Location = new System.Drawing.Point(3, 264);
             this.BinarCmB.Name = "BinarCmB";
             this.BinarCmB.Size = new System.Drawing.Size(343, 24);
             this.BinarCmB.TabIndex = 3;
+            this.BinarCmB.SelectedIndexChanged += new System.EventHandler(this.BinarCmB_SelectedIndexChanged);
             // 
             // BinarGrayCHB
             // 
@@ -403,6 +493,9 @@
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BinarNUD2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BinarNUD1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BinarPchB)).EndInit();
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
@@ -436,6 +529,10 @@
         private System.Windows.Forms.Button BinarLoad;
         private System.Windows.Forms.ComboBox BinarCmB;
         private System.Windows.Forms.Button BinarizeButton;
+        private System.Windows.Forms.NumericUpDown BinarNUD1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown BinarNUD2;
+        private System.Windows.Forms.Label label1;
     }
 }
 

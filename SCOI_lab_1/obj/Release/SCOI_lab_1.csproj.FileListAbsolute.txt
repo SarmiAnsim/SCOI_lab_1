@@ -1,9 +1,0 @@
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\bin\Release\SCOI_lab_1.exe.config
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\bin\Release\SCOI_lab_1.exe
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\bin\Release\SCOI_lab_1.pdb
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\obj\Release\SCOI_lab_1.csprojAssemblyReference.cache
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\obj\Release\SCOI_lab_1.Form1.resources
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\obj\Release\SCOI_lab_1.Properties.Resources.resources
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\obj\Release\SCOI_lab_1.csproj.GenerateResource.cache
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\obj\Release\SCOI_lab_1.exe
-C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\obj\Release\SCOI_lab_1.pdb

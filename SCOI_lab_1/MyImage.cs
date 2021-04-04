@@ -32,7 +32,7 @@ namespace SCOI_lab_1
         static extern void GlobalBinarize(byte[] bgrAValues, int count, int t);
 
         [DllImport("HightSpeedImageProc.dll", EntryPoint = "LocalBinarize", CallingConvention = CallingConvention.StdCall)]
-        static extern void LocalBinarize(byte[] bgrAValues, int[] size, int a, float k, int version);
+        static extern void LocalBinarize(byte[] bgrAValues, int[] size, int a, float k, int version, double[] test);
         public Image image { get; set; }
 
         public DataTable GraphData;
@@ -300,7 +300,7 @@ namespace SCOI_lab_1
 
             return Bimage;
         }
-        public static Image CPU_LocalBinarize(Image image, int version)
+        public static Image CPU_LocalBinarize(Image image, int version, int a, float k)
         {
             Bitmap Bimage = new Bitmap(image);
             Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
@@ -314,9 +314,9 @@ namespace SCOI_lab_1
 
             System.Runtime.InteropServices.Marshal.Copy(ptr, bgrAValues, 0, bytes);
 
-            if (version == 0)
-                LocalBinarize(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, 3, -0.2f, 0);
+            double[] test = new double[Bimage.Height * Bimage.Width];
 
+            LocalBinarize(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, a, k, version, test);
 
             System.Runtime.InteropServices.Marshal.Copy(bgrAValues, 0, ptr, bytes);
 
