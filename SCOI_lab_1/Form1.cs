@@ -14,6 +14,8 @@ namespace SCOI_lab_1
     public partial class Form1 : Form
     {
         List<Layer> layers = new List<Layer>();
+        decimal[] kk = { 0, 0, -0.2m, 0.2m, 0.5m, 0.15m };
+        decimal max = 10, min = -10;
         public Form1()
         {
             InitializeComponent();
@@ -47,6 +49,20 @@ namespace SCOI_lab_1
             pictureBox1.DragEnter += new DragEventHandler(this.PCHB_DragEnter);
 
             tabControl1.SelectedIndexChanged += new EventHandler(this.TabControl_SelectedIndexChanged);
+
+            KR1.CheckedChanged += new EventHandler(this.KR_Checked);
+            KR2.CheckedChanged += new EventHandler(this.KR_Checked);
+            KR3.CheckedChanged += new EventHandler(this.KR_Checked);
+            KR4.CheckedChanged += new EventHandler(this.KR_Checked);
+            KR5.CheckedChanged += new EventHandler(this.KR_Checked);
+            KR6.CheckedChanged += new EventHandler(this.KR_Checked);
+
+            KRtT.SetToolTip(KR1, "Критерий Гаврилова");
+            KRtT.SetToolTip(KR2, "Критерий Отсу");
+            KRtT.SetToolTip(KR3, "Критерий Ниблека");
+            KRtT.SetToolTip(KR4, "Критерий Сауволы");
+            KRtT.SetToolTip(KR5, "Критерий Кристиана Вульфа");
+            KRtT.SetToolTip(KR6, "Критерий Брэдли-Рота");
         }
         private void InitializeBackgroundWorker()
         {
@@ -544,7 +560,8 @@ namespace SCOI_lab_1
 
                     chart1.DataSource = MyImage.CPU_BarGraphData(pictureBox1.Image);
                     chart1.DataBind();
-
+                    if((panel1.Controls[0] as MyCanvas).img != null)
+                        (panel1.Controls[0] as MyCanvas).img.Dispose();
                     (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
                 }
             }
@@ -594,15 +611,116 @@ namespace SCOI_lab_1
             (panel1.Controls[0] as MyCanvas).AllRefreshPoc();
         }
 
+        private void KR_Refresh()
+        {
+            Bitmap tmp = new Bitmap(
+                BinarPchB.Image,
+                250, (int)Math.Round((decimal)BinarPchB.Image.Height * ((decimal)250.0 / BinarPchB.Image.Width)));
+
+            if (KR1.BackgroundImage != null)
+                KR1.BackgroundImage.Dispose();
+            KR1.BackgroundImage = MyImage.CPU_GlobalBinarize(tmp, 0);
+
+            if (KR2.BackgroundImage != null)
+                KR2.BackgroundImage.Dispose();
+            KR2.BackgroundImage = MyImage.CPU_GlobalBinarize(tmp, 1);
+
+            if (KR3.BackgroundImage != null)
+                KR3.BackgroundImage.Dispose();
+            KR3.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 0, (int)BinarNUD1.Value, (float)kk[2]);
+
+            if (KR4.BackgroundImage != null)
+                KR4.BackgroundImage.Dispose();
+            KR4.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 1, (int)BinarNUD1.Value, (float)kk[3]);
+
+            if (KR5.BackgroundImage != null)
+                KR5.BackgroundImage.Dispose();
+            KR5.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 2, (int)BinarNUD1.Value, (float)kk[4]);
+
+            if (KR6.BackgroundImage != null)
+                KR6.BackgroundImage.Dispose();
+            KR6.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 3, (int)BinarNUD1.Value, (float)kk[5]);
+
+            tmp.Dispose();
+        }
+        private void KR_Checked(object sender, EventArgs e)
+        {
+            var item = sender as CheckBox;
+            if (item.Checked)
+            {
+                if (KR1.Name != item.Name)
+                    KR1.Checked = false;
+                if (KR2.Name != item.Name)
+                    KR2.Checked = false;
+                if (KR3.Name != item.Name)
+                    KR3.Checked = false;
+                if (KR4.Name != item.Name)
+                    KR4.Checked = false;
+                if (KR5.Name != item.Name)
+                    KR5.Checked = false;
+                if (KR6.Name != item.Name)
+                    KR6.Checked = false;
+
+                switch (item.Name)
+                {
+                    case "KR1":
+                    case "KR2":
+                        BinarNUD1.Enabled = false;
+                        BinarNUD2.Enabled = false;
+                        break;
+                    case "KR3":
+                        BinarNUD1.Enabled = true;
+                        BinarNUD2.Enabled = true;
+                        BinarNUD2.Maximum = 10;
+                        BinarNUD2.Minimum = -10;
+                        max = 10;
+                        min = -10;
+                        BinarNUD2.Value = kk[2];
+                        break;
+                    case "KR4":
+                        BinarNUD1.Enabled = true;
+                        BinarNUD2.Enabled = true;
+                        BinarNUD2.Maximum = 0.5m;
+                        BinarNUD2.Minimum = 0.2m;
+                        max = 0.5m;
+                        min = 0.2m;
+                        BinarNUD2.Value = kk[3];
+                        break;
+                    case "KR5":
+                        BinarNUD1.Enabled = true;
+                        BinarNUD2.Enabled = true;
+                        BinarNUD2.Maximum = 1;
+                        BinarNUD2.Minimum = 0;
+                        max = 1;
+                        min = 0;
+                        BinarNUD2.Value = kk[4];
+                        break;
+                    case "KR6":
+                        BinarNUD1.Enabled = true;
+                        BinarNUD2.Enabled = true;
+                        BinarNUD2.Maximum = 1;
+                        BinarNUD2.Minimum = 0;
+                        max = 1;
+                        min = 0;
+                        BinarNUD2.Value = kk[5];
+                        break;
+                }
+
+            }
+        }
         private void BinarLoad_Click(object sender, EventArgs e)
         {
             if (BinarPchB.Image != null)
                 BinarPchB.Image.Dispose();
             else if(pictureBox1.Image != null)
             {
-                BinarCmB.SelectedIndex = 0;
-                BinarCmB.Enabled = true;
                 BinarizeButton.Enabled = true;
+                KR1.Enabled = true;
+                KR2.Enabled = true;
+                KR3.Enabled = true;
+                KR4.Enabled = true;
+                KR5.Enabled = true;
+                KR6.Enabled = true;
                 (sender as Button).Text = "Изменить";
             }
             if (pictureBox1.Image != null)
@@ -611,66 +729,104 @@ namespace SCOI_lab_1
                 else
                     BinarPchB.Image = new Bitmap(pictureBox1.Image);
 
+            KR_Refresh();
         }
-
         private void BinarizeButton_Click(object sender, EventArgs e)
         {
-            pictureBox1.Image.Dispose();
-            switch (BinarCmB.SelectedIndex)
+            BinarizeAsync(new CheckBox[] { KR1, KR2, KR3, KR4, KR5, KR6 }.FirstOrDefault(item => item.Checked));
+        }
+        private async void BinarizeAsync(CheckBox item)
+        {
+            if(item != null)
             {
-                case 0:
-                    pictureBox1.Image = MyImage.CPU_GlobalBinarize(BinarPchB.Image, 0);
-                    break;
-                case 1:
-                    pictureBox1.Image = MyImage.CPU_GlobalBinarize(BinarPchB.Image, 1);
-                    break;
-                case 2:
-                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 0, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
-                    break;
-                case 3:
-                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 1, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
-                    break;
-                case 4:
-                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 2, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
-                    break;
-                case 5:
-                    pictureBox1.Image = MyImage.CPU_LocalBinarize(BinarPchB.Image, 3, (int)BinarNUD1.Value, (float)BinarNUD2.Value);
-                    break;
+                progressBar1.Value = 0;
+                this.BinarizeButton.Enabled = false;
+                Image tmp = null;
+                switch (item.Name)
+                {
+                    case "KR1":
+                        tmp = await Task.Run(() => MyImage.CPU_GlobalBinarize(BinarPchB.Image, 0));
+                        break;
+                    case "KR2":
+                        tmp = await Task.Run(() => MyImage.CPU_GlobalBinarize(BinarPchB.Image, 1));
+                        break;
+                    case "KR3":
+                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 0, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        break;
+                    case "KR4":
+                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 1, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        break;
+                    case "KR5":
+                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 2, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        break;
+                    case "KR6":
+                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 3, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        break;
+
+                    default:
+                        break;
+                }
+                if (tmp != null)
+                {
+                    progressBar1.Value = 100;
+
+                    pictureBox1.Image.Dispose();
+                    pictureBox1.Image = tmp;
+
+                    if ((panel1.Controls[0] as MyCanvas).img != null)
+                        (panel1.Controls[0] as MyCanvas).img.Dispose();
+                    (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
+                }
+                this.button3.Enabled = true;
+                this.BinarizeButton.Enabled = true;
             }
-
-            (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
-
-            this.button3.Enabled = true;
         }
 
-        private void BinarCmB_SelectedIndexChanged(object sender, EventArgs e)
+        private void BinarNUD1_ValueChanged(object sender, EventArgs e)
         {
-            switch ((sender as ComboBox).SelectedIndex)
+            KR_Refresh();
+        }
+
+        private void BinarNUD2_ValueChanged(object sender, EventArgs e)
+        {
+            if(max == (sender as NumericUpDown).Maximum && min == (sender as NumericUpDown).Minimum)
             {
-                case 0:
-                case 1:
-                    BinarNUD1.Enabled = false;
-                    BinarNUD2.Enabled = false;
-                    break;
-                case 2:
-                    BinarNUD2.Maximum = 10;
-                    BinarNUD2.Minimum = -10;
-                    BinarNUD1.Enabled = true;
-                    BinarNUD2.Enabled = true;
-                    break;
-                case 3:
-                    BinarNUD2.Maximum = 0.5m;
-                    BinarNUD2.Minimum = 0.2m;
-                    BinarNUD1.Enabled = true;
-                    BinarNUD2.Enabled = true;
-                    break;
-                case 4:
-                case 5:
-                    BinarNUD2.Maximum = 1;
-                    BinarNUD2.Minimum = 0;
-                    BinarNUD1.Enabled = true;
-                    BinarNUD2.Enabled = true;
-                    break;
+                Bitmap tmp = new Bitmap(
+                BinarPchB.Image,
+                250, (int)Math.Round((decimal)BinarPchB.Image.Height * ((decimal)250.0 / BinarPchB.Image.Width)));
+
+                var num = (sender as NumericUpDown).Value;
+
+                switch (new CheckBox[] { KR1, KR2, KR3, KR4, KR5, KR6 }.First(item => item.Checked).Name)
+                {
+                    case "KR1":
+                    case "KR2":
+                        break;
+                    case "KR3":
+                        KR3.BackgroundImage.Dispose();
+                        KR3.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 0, (int)BinarNUD1.Value, (float)num);
+                        kk[2] = num;
+                        break;
+                    case "KR4":
+                        KR4.BackgroundImage.Dispose();
+                        KR4.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 1, (int)BinarNUD1.Value, (float)num);
+                        kk[3] = num;
+                        break;
+                    case "KR5":
+                        KR5.BackgroundImage.Dispose();
+                        KR5.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 2, (int)BinarNUD1.Value, (float)num);
+                        kk[4] = num;
+                        break;
+                    case "KR6":
+                        KR6.BackgroundImage.Dispose();
+                        KR6.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 3, (int)BinarNUD1.Value, (float)num);
+                        kk[5] = num;
+                        break;
+
+                    default:
+                        break;
+                }
+                tmp.Dispose();
             }
         }
     }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -51,12 +52,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.BinarNUD1 = new System.Windows.Forms.NumericUpDown();
             this.BinarizeButton = new System.Windows.Forms.Button();
-            this.BinarCmB = new System.Windows.Forms.ComboBox();
             this.BinarGrayCHB = new System.Windows.Forms.CheckBox();
             this.BinarLoad = new System.Windows.Forms.Button();
             this.BinarPchB = new System.Windows.Forms.PictureBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.KR1 = new System.Windows.Forms.CheckBox();
+            this.KR2 = new System.Windows.Forms.CheckBox();
+            this.KR3 = new System.Windows.Forms.CheckBox();
+            this.KR4 = new System.Windows.Forms.CheckBox();
+            this.KR5 = new System.Windows.Forms.CheckBox();
+            this.KR6 = new System.Windows.Forms.CheckBox();
+            this.KRtT = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -309,12 +316,17 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabPage3.Controls.Add(this.BinarizeButton);
+            this.tabPage3.Controls.Add(this.KR6);
+            this.tabPage3.Controls.Add(this.KR5);
+            this.tabPage3.Controls.Add(this.KR4);
+            this.tabPage3.Controls.Add(this.KR3);
+            this.tabPage3.Controls.Add(this.KR2);
+            this.tabPage3.Controls.Add(this.KR1);
             this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Controls.Add(this.BinarNUD2);
             this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Controls.Add(this.BinarNUD1);
-            this.tabPage3.Controls.Add(this.BinarizeButton);
-            this.tabPage3.Controls.Add(this.BinarCmB);
             this.tabPage3.Controls.Add(this.BinarGrayCHB);
             this.tabPage3.Controls.Add(this.BinarLoad);
             this.tabPage3.Controls.Add(this.BinarPchB);
@@ -327,7 +339,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 359);
+            this.label2.Location = new System.Drawing.Point(22, 538);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(209, 17);
             this.label2.TabIndex = 8;
@@ -342,7 +354,7 @@
             0,
             0,
             65536});
-            this.BinarNUD2.Location = new System.Drawing.Point(240, 357);
+            this.BinarNUD2.Location = new System.Drawing.Point(237, 536);
             this.BinarNUD2.Maximum = new decimal(new int[] {
             10,
             0,
@@ -358,11 +370,12 @@
             this.BinarNUD2.TabIndex = 7;
             this.BinarNUD2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.BinarNUD2.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left;
+            this.BinarNUD2.ValueChanged += new System.EventHandler(this.BinarNUD2_ValueChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 317);
+            this.label1.Location = new System.Drawing.Point(28, 504);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(203, 17);
             this.label1.TabIndex = 6;
@@ -376,7 +389,7 @@
             0,
             0,
             0});
-            this.BinarNUD1.Location = new System.Drawing.Point(240, 315);
+            this.BinarNUD1.Location = new System.Drawing.Point(237, 502);
             this.BinarNUD1.Maximum = new decimal(new int[] {
             1001,
             0,
@@ -399,9 +412,11 @@
             0,
             0,
             0});
+            this.BinarNUD1.ValueChanged += new System.EventHandler(this.BinarNUD1_ValueChanged);
             // 
             // BinarizeButton
             // 
+            this.BinarizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BinarizeButton.Enabled = false;
             this.BinarizeButton.Location = new System.Drawing.Point(3, 567);
             this.BinarizeButton.Name = "BinarizeButton";
@@ -410,24 +425,6 @@
             this.BinarizeButton.Text = "Бинаризировать";
             this.BinarizeButton.UseVisualStyleBackColor = true;
             this.BinarizeButton.Click += new System.EventHandler(this.BinarizeButton_Click);
-            // 
-            // BinarCmB
-            // 
-            this.BinarCmB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.BinarCmB.Enabled = false;
-            this.BinarCmB.FormattingEnabled = true;
-            this.BinarCmB.Items.AddRange(new object[] {
-            "Критерий Гаврилова",
-            "Критерий Отсу",
-            "Критерий Ниблека",
-            "Критерий Сауволы",
-            "Критерий Кристиана Вульфа",
-            "Критерий Брэдли-Рота"});
-            this.BinarCmB.Location = new System.Drawing.Point(3, 264);
-            this.BinarCmB.Name = "BinarCmB";
-            this.BinarCmB.Size = new System.Drawing.Size(343, 24);
-            this.BinarCmB.TabIndex = 3;
-            this.BinarCmB.SelectedIndexChanged += new System.EventHandler(this.BinarCmB_SelectedIndexChanged);
             // 
             // BinarGrayCHB
             // 
@@ -470,6 +467,98 @@
             this.splitContainer3.Size = new System.Drawing.Size(1397, 663);
             this.splitContainer3.SplitterDistance = 25;
             this.splitContainer3.TabIndex = 1;
+            // 
+            // KR1
+            // 
+            this.KR1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR1.Enabled = false;
+            this.KR1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KR1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.KR1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR1.Location = new System.Drawing.Point(15, 279);
+            this.KR1.Name = "KR1";
+            this.KR1.Size = new System.Drawing.Size(105, 98);
+            this.KR1.TabIndex = 9;
+            this.KR1.Text = "Критерий Гаврилова";
+            this.KR1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR1.UseVisualStyleBackColor = true;
+            // 
+            // KR2
+            // 
+            this.KR2.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR2.Enabled = false;
+            this.KR2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR2.Location = new System.Drawing.Point(126, 279);
+            this.KR2.Name = "KR2";
+            this.KR2.Size = new System.Drawing.Size(105, 98);
+            this.KR2.TabIndex = 10;
+            this.KR2.Text = "Критерий Отсу";
+            this.KR2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR2.UseVisualStyleBackColor = true;
+            // 
+            // KR3
+            // 
+            this.KR3.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR3.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR3.Enabled = false;
+            this.KR3.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR3.Location = new System.Drawing.Point(237, 279);
+            this.KR3.Name = "KR3";
+            this.KR3.Size = new System.Drawing.Size(105, 98);
+            this.KR3.TabIndex = 11;
+            this.KR3.Text = "Критерий Ниблека";
+            this.KR3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR3.UseVisualStyleBackColor = true;
+            // 
+            // KR4
+            // 
+            this.KR4.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR4.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR4.Enabled = false;
+            this.KR4.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR4.Location = new System.Drawing.Point(15, 380);
+            this.KR4.Name = "KR4";
+            this.KR4.Size = new System.Drawing.Size(105, 98);
+            this.KR4.TabIndex = 12;
+            this.KR4.Text = "Критерий Сауволы";
+            this.KR4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR4.UseVisualStyleBackColor = true;
+            // 
+            // KR5
+            // 
+            this.KR5.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR5.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR5.Enabled = false;
+            this.KR5.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR5.Location = new System.Drawing.Point(126, 380);
+            this.KR5.Name = "KR5";
+            this.KR5.Size = new System.Drawing.Size(105, 98);
+            this.KR5.TabIndex = 13;
+            this.KR5.Text = "Критерий Кристиана Вульфа";
+            this.KR5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR5.UseVisualStyleBackColor = true;
+            // 
+            // KR6
+            // 
+            this.KR6.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR6.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR6.Enabled = false;
+            this.KR6.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR6.Location = new System.Drawing.Point(237, 380);
+            this.KR6.Name = "KR6";
+            this.KR6.Size = new System.Drawing.Size(105, 98);
+            this.KR6.TabIndex = 14;
+            this.KR6.Text = "Критерий Брэдли-Рота";
+            this.KR6.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR6.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -527,12 +616,18 @@
         private System.Windows.Forms.PictureBox BinarPchB;
         private System.Windows.Forms.CheckBox BinarGrayCHB;
         private System.Windows.Forms.Button BinarLoad;
-        private System.Windows.Forms.ComboBox BinarCmB;
         private System.Windows.Forms.Button BinarizeButton;
         private System.Windows.Forms.NumericUpDown BinarNUD1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown BinarNUD2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox KR6;
+        private System.Windows.Forms.CheckBox KR5;
+        private System.Windows.Forms.CheckBox KR4;
+        private System.Windows.Forms.CheckBox KR3;
+        private System.Windows.Forms.CheckBox KR2;
+        private System.Windows.Forms.CheckBox KR1;
+        private System.Windows.Forms.ToolTip KRtT;
     }
 }
 
