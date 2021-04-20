@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCOI_lab_1", "SCOI_lab_1\SCOI_lab_1.csproj", "{74794933-8256-4F6F-B331-AF51543B0090}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HightSpeedImageProc", "HightSpeedImageProc\HightSpeedImageProc.vcxproj", "{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}"
+	ProjectSection(ProjectDependencies) = postProject
+		{74794933-8256-4F6F-B331-AF51543B0090} = {74794933-8256-4F6F-B331-AF51543B0090}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

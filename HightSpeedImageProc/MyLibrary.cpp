@@ -156,6 +156,37 @@ std::vector<std::vector<std::vector<long double>>> IntegralImage(byte* bgrAValue
     return result;
 }
 
+byte partition(byte arr[], int l, int r)
+{
+    int x = arr[r], i = l;
+    for (int j = l; j <= r - 1; j++) {
+        if (arr[j] <= x) {
+            std::swap(arr[i], arr[j]);
+            i++;
+        }
+    }
+    std::swap(arr[i], arr[r]);
+    return i;
+}
+byte kthSmallest(byte arr[], int l, int r, int k)
+{
+    if (k > 0 && k <= r - l + 1) {
+
+        int index = partition(arr, l, r);
+
+        if (index - l == k - 1)
+            return arr[index];
+
+        if (index - l > k - 1)
+            return kthSmallest(arr, l, index - 1, k);
+
+        return kthSmallest(arr, index + 1, r,
+            k - index + l - 1);
+    }
+
+    return INT_MAX;
+}
+
 extern "C"
 {
     __declspec(dllexport) void __stdcall ChangeBytes(byte* basis_bgrAValues, byte* supplement_bgrAValues, int count, int action)
@@ -454,7 +485,13 @@ extern "C"
                     }
                 }
 
-                std::vector<const byte*> ptr1(data1.size());
+                kthSmallest(data1.data(), 0, data1.size() - 1, (data1.size() - 1) / 2 + 1);
+                S.push({ 
+                    kthSmallest(data1.data(), 0, data1.size() - 1, (data1.size() - 1) / 2 + 1),
+                    kthSmallest(data2.data(), 0, data2.size() - 1, (data2.size() - 1) / 2 + 1),
+                    kthSmallest(data3.data(), 0, data3.size() - 1, (data3.size() - 1) / 2 + 1) });
+
+                /*std::vector<const byte*> ptr1(data1.size());
                 std::vector<const byte*> ptr2(data2.size());
                 std::vector<const byte*> ptr3(data3.size());
                 transform(data1.begin(), data1.end(), ptr1.begin(), [](const byte& d) {return &d; });
@@ -471,7 +508,7 @@ extern "C"
                 ptrdiff_t pos3 = *mid3 - &data3[0];
 
                 out_test[i * size[1] + j] = data1[pos1];
-                S.push({ data1[pos1], data2[pos2], data3[pos3] });
+                S.push({ data1[pos1], data2[pos2], data3[pos3] });*/
                 data1.clear();
                 data1.~vector();
                 data2.clear();

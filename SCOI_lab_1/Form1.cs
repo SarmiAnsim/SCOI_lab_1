@@ -815,6 +815,9 @@ namespace SCOI_lab_1
 
                 if(!error)
                 {
+                    FMediaBut.Enabled = false;
+                    (sender as Button).Enabled = false;
+                    button3.Enabled = false;
                     FilterAsync(1, a, b, Core);
                 }
             }
@@ -878,6 +881,9 @@ namespace SCOI_lab_1
         }
         private void FMediaBut_Click(object sender, EventArgs e)
         {
+            (sender as Button).Enabled = false;
+            Filter.Enabled = false;
+            button3.Enabled = false;
             FilterAsync(2, (int)MHeight.Value, (int)MWight.Value);
         }
         private void BinarNUD2_ValueChanged(object sender, EventArgs e)
@@ -943,6 +949,10 @@ namespace SCOI_lab_1
                     (panel1.Controls[0] as MyCanvas).img.Dispose();
                 (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
             }
+
+            FMediaBut.Enabled = true;
+            Filter.Enabled = true;
+            button3.Enabled = true;
         }
     }
 }
