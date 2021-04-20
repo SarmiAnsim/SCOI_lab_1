@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button3 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
@@ -47,22 +47,37 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.BinarizeButton = new System.Windows.Forms.Button();
+            this.KR6 = new System.Windows.Forms.CheckBox();
+            this.KR5 = new System.Windows.Forms.CheckBox();
+            this.KR4 = new System.Windows.Forms.CheckBox();
+            this.KR3 = new System.Windows.Forms.CheckBox();
+            this.KR2 = new System.Windows.Forms.CheckBox();
+            this.KR1 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.BinarNUD2 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.BinarNUD1 = new System.Windows.Forms.NumericUpDown();
-            this.BinarizeButton = new System.Windows.Forms.Button();
             this.BinarGrayCHB = new System.Windows.Forms.CheckBox();
             this.BinarLoad = new System.Windows.Forms.Button();
             this.BinarPchB = new System.Windows.Forms.PictureBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.FMediaBut = new System.Windows.Forms.Button();
+            this.Matrix_textBox = new System.Windows.Forms.TextBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.LineKoef = new System.Windows.Forms.NumericUpDown();
+            this.SumLbl = new System.Windows.Forms.Label();
+            this.FLoadBut = new System.Windows.Forms.Button();
+            this.MHeight = new System.Windows.Forms.NumericUpDown();
+            this.Filter = new System.Windows.Forms.Button();
+            this.MWight = new System.Windows.Forms.NumericUpDown();
+            this.FilterPb = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.GenGauss = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Sig = new System.Windows.Forms.NumericUpDown();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.KR1 = new System.Windows.Forms.CheckBox();
-            this.KR2 = new System.Windows.Forms.CheckBox();
-            this.KR3 = new System.Windows.Forms.CheckBox();
-            this.KR4 = new System.Windows.Forms.CheckBox();
-            this.KR5 = new System.Windows.Forms.CheckBox();
-            this.KR6 = new System.Windows.Forms.CheckBox();
             this.KRtT = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -81,6 +96,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.BinarNUD2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BinarNUD1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BinarPchB)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineKoef)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MWight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FilterPb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sig)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
@@ -146,6 +167,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Multiline = true;
@@ -185,7 +207,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.button2);
             this.splitContainer2.Panel2.Controls.Add(this.button1);
             this.splitContainer2.Size = new System.Drawing.Size(343, 599);
-            this.splitContainer2.SplitterDistance = 525;
+            this.splitContainer2.SplitterDistance = 524;
             this.splitContainer2.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -202,7 +224,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 115F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(343, 525);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(343, 524);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // button2
@@ -213,7 +235,7 @@
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.button2.Location = new System.Drawing.Point(201, 8);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(139, 52);
+            this.button2.Size = new System.Drawing.Size(139, 53);
             this.button2.TabIndex = 1;
             this.button2.Text = "Результат";
             this.button2.UseVisualStyleBackColor = false;
@@ -227,7 +249,7 @@
             this.button1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.button1.Location = new System.Drawing.Point(3, 8);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(139, 52);
+            this.button1.Size = new System.Drawing.Size(139, 53);
             this.button1.TabIndex = 0;
             this.button1.Text = "Добавить";
             this.button1.UseVisualStyleBackColor = false;
@@ -286,29 +308,29 @@
             // 
             this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chart1.BackColor = System.Drawing.Color.DimGray;
-            chartArea2.AxisX.LabelStyle.Enabled = false;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.AxisY.LabelStyle.Enabled = false;
-            chartArea2.AxisY.MajorGrid.Enabled = false;
-            chartArea2.BackColor = System.Drawing.Color.White;
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisY.LabelStyle.Enabled = false;
+            chartArea1.AxisY.MajorGrid.Enabled = false;
+            chartArea1.BackColor = System.Drawing.Color.White;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(0, 375);
             this.chart1.Margin = new System.Windows.Forms.Padding(1);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            series2.BorderColor = System.Drawing.Color.Black;
-            series2.BorderWidth = 0;
-            series2.ChartArea = "ChartArea1";
-            series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            series2.CustomProperties = "PointWidth=1";
-            series2.LabelBackColor = System.Drawing.Color.White;
-            series2.LabelBorderColor = System.Drawing.Color.White;
-            series2.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
-            series2.LabelBorderWidth = 0;
-            series2.Name = "Series1";
-            series2.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chart1.Series.Add(series2);
+            series1.BorderColor = System.Drawing.Color.Black;
+            series1.BorderWidth = 0;
+            series1.ChartArea = "ChartArea1";
+            series1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            series1.CustomProperties = "PointWidth=1";
+            series1.LabelBackColor = System.Drawing.Color.White;
+            series1.LabelBorderColor = System.Drawing.Color.White;
+            series1.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
+            series1.LabelBorderWidth = 0;
+            series1.Name = "Series1";
+            series1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(347, 230);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "Гистограмма";
@@ -335,6 +357,110 @@
             this.tabPage3.Size = new System.Drawing.Size(349, 605);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Бинаризация";
+            // 
+            // BinarizeButton
+            // 
+            this.BinarizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BinarizeButton.Enabled = false;
+            this.BinarizeButton.Location = new System.Drawing.Point(0, 567);
+            this.BinarizeButton.Name = "BinarizeButton";
+            this.BinarizeButton.Size = new System.Drawing.Size(349, 38);
+            this.BinarizeButton.TabIndex = 4;
+            this.BinarizeButton.Text = "Бинаризировать";
+            this.BinarizeButton.UseVisualStyleBackColor = true;
+            this.BinarizeButton.Click += new System.EventHandler(this.BinarizeButton_Click);
+            // 
+            // KR6
+            // 
+            this.KR6.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR6.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR6.Enabled = false;
+            this.KR6.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR6.Location = new System.Drawing.Point(237, 380);
+            this.KR6.Name = "KR6";
+            this.KR6.Size = new System.Drawing.Size(105, 98);
+            this.KR6.TabIndex = 14;
+            this.KR6.Text = "Критерий Брэдли-Рота";
+            this.KR6.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR6.UseVisualStyleBackColor = true;
+            // 
+            // KR5
+            // 
+            this.KR5.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR5.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR5.Enabled = false;
+            this.KR5.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR5.Location = new System.Drawing.Point(126, 380);
+            this.KR5.Name = "KR5";
+            this.KR5.Size = new System.Drawing.Size(105, 98);
+            this.KR5.TabIndex = 13;
+            this.KR5.Text = "Критерий Кристиана Вульфа";
+            this.KR5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR5.UseVisualStyleBackColor = true;
+            // 
+            // KR4
+            // 
+            this.KR4.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR4.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR4.Enabled = false;
+            this.KR4.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR4.Location = new System.Drawing.Point(15, 380);
+            this.KR4.Name = "KR4";
+            this.KR4.Size = new System.Drawing.Size(105, 98);
+            this.KR4.TabIndex = 12;
+            this.KR4.Text = "Критерий Сауволы";
+            this.KR4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR4.UseVisualStyleBackColor = true;
+            // 
+            // KR3
+            // 
+            this.KR3.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR3.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR3.Enabled = false;
+            this.KR3.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR3.Location = new System.Drawing.Point(237, 279);
+            this.KR3.Name = "KR3";
+            this.KR3.Size = new System.Drawing.Size(105, 98);
+            this.KR3.TabIndex = 11;
+            this.KR3.Text = "Критерий Ниблека";
+            this.KR3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR3.UseVisualStyleBackColor = true;
+            // 
+            // KR2
+            // 
+            this.KR2.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR2.Enabled = false;
+            this.KR2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR2.Location = new System.Drawing.Point(126, 279);
+            this.KR2.Name = "KR2";
+            this.KR2.Size = new System.Drawing.Size(105, 98);
+            this.KR2.TabIndex = 10;
+            this.KR2.Text = "Критерий Отсу";
+            this.KR2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR2.UseVisualStyleBackColor = true;
+            // 
+            // KR1
+            // 
+            this.KR1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.KR1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.KR1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KR1.Enabled = false;
+            this.KR1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KR1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.KR1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.KR1.Location = new System.Drawing.Point(15, 279);
+            this.KR1.Name = "KR1";
+            this.KR1.Size = new System.Drawing.Size(105, 98);
+            this.KR1.TabIndex = 9;
+            this.KR1.Text = "Критерий Гаврилова";
+            this.KR1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.KR1.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -414,18 +540,6 @@
             0});
             this.BinarNUD1.ValueChanged += new System.EventHandler(this.BinarNUD1_ValueChanged);
             // 
-            // BinarizeButton
-            // 
-            this.BinarizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BinarizeButton.Enabled = false;
-            this.BinarizeButton.Location = new System.Drawing.Point(3, 567);
-            this.BinarizeButton.Name = "BinarizeButton";
-            this.BinarizeButton.Size = new System.Drawing.Size(343, 35);
-            this.BinarizeButton.TabIndex = 4;
-            this.BinarizeButton.Text = "Бинаризировать";
-            this.BinarizeButton.UseVisualStyleBackColor = true;
-            this.BinarizeButton.Click += new System.EventHandler(this.BinarizeButton_Click);
-            // 
             // BinarGrayCHB
             // 
             this.BinarGrayCHB.Location = new System.Drawing.Point(145, 13);
@@ -454,6 +568,210 @@
             this.BinarPchB.TabIndex = 0;
             this.BinarPchB.TabStop = false;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabPage4.Controls.Add(this.FMediaBut);
+            this.tabPage4.Controls.Add(this.Matrix_textBox);
+            this.tabPage4.Controls.Add(this.comboBox2);
+            this.tabPage4.Controls.Add(this.LineKoef);
+            this.tabPage4.Controls.Add(this.SumLbl);
+            this.tabPage4.Controls.Add(this.FLoadBut);
+            this.tabPage4.Controls.Add(this.MHeight);
+            this.tabPage4.Controls.Add(this.Filter);
+            this.tabPage4.Controls.Add(this.MWight);
+            this.tabPage4.Controls.Add(this.FilterPb);
+            this.tabPage4.Controls.Add(this.label3);
+            this.tabPage4.Controls.Add(this.GenGauss);
+            this.tabPage4.Controls.Add(this.label4);
+            this.tabPage4.Controls.Add(this.Sig);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(349, 605);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Фильтрация";
+            // 
+            // FMediaBut
+            // 
+            this.FMediaBut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.FMediaBut.Location = new System.Drawing.Point(67, 130);
+            this.FMediaBut.Name = "FMediaBut";
+            this.FMediaBut.Size = new System.Drawing.Size(76, 27);
+            this.FMediaBut.TabIndex = 15;
+            this.FMediaBut.Text = "Медиана";
+            this.FMediaBut.UseVisualStyleBackColor = false;
+            this.FMediaBut.Click += new System.EventHandler(this.FMediaBut_Click);
+            // 
+            // Matrix_textBox
+            // 
+            this.Matrix_textBox.Location = new System.Drawing.Point(0, 219);
+            this.Matrix_textBox.Multiline = true;
+            this.Matrix_textBox.Name = "Matrix_textBox";
+            this.Matrix_textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Matrix_textBox.Size = new System.Drawing.Size(349, 357);
+            this.Matrix_textBox.TabIndex = 0;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "Нет   1x",
+            "Фильтр Приюита   1/3 x",
+            "Фильтр Собеля   1/4 x"});
+            this.comboBox2.Location = new System.Drawing.Point(3, 189);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(340, 24);
+            this.comboBox2.TabIndex = 3;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            // 
+            // LineKoef
+            // 
+            this.LineKoef.DecimalPlaces = 8;
+            this.LineKoef.Location = new System.Drawing.Point(252, 161);
+            this.LineKoef.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.LineKoef.Name = "LineKoef";
+            this.LineKoef.Size = new System.Drawing.Size(91, 22);
+            this.LineKoef.TabIndex = 4;
+            this.LineKoef.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.LineKoef.Visible = false;
+            // 
+            // SumLbl
+            // 
+            this.SumLbl.AutoSize = true;
+            this.SumLbl.BackColor = System.Drawing.Color.Silver;
+            this.SumLbl.Location = new System.Drawing.Point(6, 163);
+            this.SumLbl.Name = "SumLbl";
+            this.SumLbl.Size = new System.Drawing.Size(58, 17);
+            this.SumLbl.TabIndex = 14;
+            this.SumLbl.Text = "Сумма: ";
+            // 
+            // FLoadBut
+            // 
+            this.FLoadBut.Location = new System.Drawing.Point(6, 7);
+            this.FLoadBut.Name = "FLoadBut";
+            this.FLoadBut.Size = new System.Drawing.Size(138, 42);
+            this.FLoadBut.TabIndex = 2;
+            this.FLoadBut.Text = "Скопировать изображение";
+            this.FLoadBut.UseVisualStyleBackColor = true;
+            this.FLoadBut.Click += new System.EventHandler(this.FLoadBut_Click);
+            // 
+            // MHeight
+            // 
+            this.MHeight.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.MHeight.Location = new System.Drawing.Point(6, 74);
+            this.MHeight.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.MHeight.Name = "MHeight";
+            this.MHeight.Size = new System.Drawing.Size(58, 22);
+            this.MHeight.TabIndex = 11;
+            this.MHeight.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // Filter
+            // 
+            this.Filter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.Filter.Enabled = false;
+            this.Filter.Location = new System.Drawing.Point(0, 575);
+            this.Filter.Name = "Filter";
+            this.Filter.Size = new System.Drawing.Size(348, 34);
+            this.Filter.TabIndex = 1;
+            this.Filter.Text = "Фильтрация";
+            this.Filter.UseVisualStyleBackColor = false;
+            this.Filter.Click += new System.EventHandler(this.Filter_Click);
+            // 
+            // MWight
+            // 
+            this.MWight.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.MWight.Location = new System.Drawing.Point(82, 74);
+            this.MWight.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.MWight.Name = "MWight";
+            this.MWight.Size = new System.Drawing.Size(62, 22);
+            this.MWight.TabIndex = 12;
+            this.MWight.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // FilterPb
+            // 
+            this.FilterPb.Location = new System.Drawing.Point(150, 0);
+            this.FilterPb.Name = "FilterPb";
+            this.FilterPb.Size = new System.Drawing.Size(198, 152);
+            this.FilterPb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.FilterPb.TabIndex = 1;
+            this.FilterPb.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Silver;
+            this.label3.Location = new System.Drawing.Point(64, 76);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(17, 17);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "X";
+            // 
+            // GenGauss
+            // 
+            this.GenGauss.Location = new System.Drawing.Point(9, 130);
+            this.GenGauss.Name = "GenGauss";
+            this.GenGauss.Size = new System.Drawing.Size(55, 27);
+            this.GenGauss.TabIndex = 10;
+            this.GenGauss.Text = "Гаусс";
+            this.GenGauss.UseVisualStyleBackColor = true;
+            this.GenGauss.Click += new System.EventHandler(this.GenGauss_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Silver;
+            this.label4.Location = new System.Drawing.Point(10, 104);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(32, 17);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "σ = ";
+            // 
+            // Sig
+            // 
+            this.Sig.Location = new System.Drawing.Point(48, 102);
+            this.Sig.Name = "Sig";
+            this.Sig.Size = new System.Drawing.Size(54, 22);
+            this.Sig.TabIndex = 6;
+            this.Sig.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -467,98 +785,6 @@
             this.splitContainer3.Size = new System.Drawing.Size(1397, 663);
             this.splitContainer3.SplitterDistance = 25;
             this.splitContainer3.TabIndex = 1;
-            // 
-            // KR1
-            // 
-            this.KR1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.KR1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.KR1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.KR1.Enabled = false;
-            this.KR1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KR1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.KR1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.KR1.Location = new System.Drawing.Point(15, 279);
-            this.KR1.Name = "KR1";
-            this.KR1.Size = new System.Drawing.Size(105, 98);
-            this.KR1.TabIndex = 9;
-            this.KR1.Text = "Критерий Гаврилова";
-            this.KR1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.KR1.UseVisualStyleBackColor = true;
-            // 
-            // KR2
-            // 
-            this.KR2.Appearance = System.Windows.Forms.Appearance.Button;
-            this.KR2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.KR2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.KR2.Enabled = false;
-            this.KR2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.KR2.Location = new System.Drawing.Point(126, 279);
-            this.KR2.Name = "KR2";
-            this.KR2.Size = new System.Drawing.Size(105, 98);
-            this.KR2.TabIndex = 10;
-            this.KR2.Text = "Критерий Отсу";
-            this.KR2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.KR2.UseVisualStyleBackColor = true;
-            // 
-            // KR3
-            // 
-            this.KR3.Appearance = System.Windows.Forms.Appearance.Button;
-            this.KR3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.KR3.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.KR3.Enabled = false;
-            this.KR3.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.KR3.Location = new System.Drawing.Point(237, 279);
-            this.KR3.Name = "KR3";
-            this.KR3.Size = new System.Drawing.Size(105, 98);
-            this.KR3.TabIndex = 11;
-            this.KR3.Text = "Критерий Ниблека";
-            this.KR3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.KR3.UseVisualStyleBackColor = true;
-            // 
-            // KR4
-            // 
-            this.KR4.Appearance = System.Windows.Forms.Appearance.Button;
-            this.KR4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.KR4.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.KR4.Enabled = false;
-            this.KR4.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.KR4.Location = new System.Drawing.Point(15, 380);
-            this.KR4.Name = "KR4";
-            this.KR4.Size = new System.Drawing.Size(105, 98);
-            this.KR4.TabIndex = 12;
-            this.KR4.Text = "Критерий Сауволы";
-            this.KR4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.KR4.UseVisualStyleBackColor = true;
-            // 
-            // KR5
-            // 
-            this.KR5.Appearance = System.Windows.Forms.Appearance.Button;
-            this.KR5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.KR5.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.KR5.Enabled = false;
-            this.KR5.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.KR5.Location = new System.Drawing.Point(126, 380);
-            this.KR5.Name = "KR5";
-            this.KR5.Size = new System.Drawing.Size(105, 98);
-            this.KR5.TabIndex = 13;
-            this.KR5.Text = "Критерий Кристиана Вульфа";
-            this.KR5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.KR5.UseVisualStyleBackColor = true;
-            // 
-            // KR6
-            // 
-            this.KR6.Appearance = System.Windows.Forms.Appearance.Button;
-            this.KR6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.KR6.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.KR6.Enabled = false;
-            this.KR6.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.KR6.Location = new System.Drawing.Point(237, 380);
-            this.KR6.Name = "KR6";
-            this.KR6.Size = new System.Drawing.Size(105, 98);
-            this.KR6.TabIndex = 14;
-            this.KR6.Text = "Критерий Брэдли-Рота";
-            this.KR6.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.KR6.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -586,6 +812,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.BinarNUD2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BinarNUD1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BinarPchB)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineKoef)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MWight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FilterPb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sig)).EndInit();
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
@@ -628,6 +861,21 @@
         private System.Windows.Forms.CheckBox KR2;
         private System.Windows.Forms.CheckBox KR1;
         private System.Windows.Forms.ToolTip KRtT;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TextBox Matrix_textBox;
+        private System.Windows.Forms.Button Filter;
+        private System.Windows.Forms.Button FLoadBut;
+        private System.Windows.Forms.PictureBox FilterPb;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.NumericUpDown LineKoef;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown Sig;
+        private System.Windows.Forms.Button GenGauss;
+        private System.Windows.Forms.NumericUpDown MHeight;
+        private System.Windows.Forms.NumericUpDown MWight;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label SumLbl;
+        private System.Windows.Forms.Button FMediaBut;
     }
 }
 

@@ -311,7 +311,7 @@ namespace SCOI_lab_1
         }
         public void AllRefreshPoc()
         {
-            if(Values.Count == 256)
+            if(Values.Count == 256 && img != null)
             {
                (DataTable, Image) result;
                

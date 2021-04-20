@@ -3,38 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCOI_lab_1", "SCOI_lab_1\SCOI_lab_1.csproj", "{74794933-8256-4F6F-B331-AF51543B0090}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HightSpeedImageProc", "HightSpeedImageProc\HightSpeedImageProc.vcxproj", "{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{74794933-8256-4F6F-B331-AF51543B0090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Debug|x64.Build.0 = Debug|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Debug|x86.Build.0 = Debug|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Release|x64.ActiveCfg = Release|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Release|x64.Build.0 = Release|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Release|x86.ActiveCfg = Release|Any CPU
-		{74794933-8256-4F6F-B331-AF51543B0090}.Release|x86.Build.0 = Release|Any CPU
-		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Debug|x64.ActiveCfg = Debug|x64
 		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Debug|x64.Build.0 = Debug|x64
 		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Debug|x86.ActiveCfg = Debug|Win32
 		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Debug|x86.Build.0 = Debug|Win32
-		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Release|Any CPU.ActiveCfg = Release|Win32
 		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Release|x64.ActiveCfg = Release|x64
 		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Release|x64.Build.0 = Release|x64
 		{D5B51072-F0A9-47E3-8CD6-6E9CC7D82E40}.Release|x86.ActiveCfg = Release|Win32

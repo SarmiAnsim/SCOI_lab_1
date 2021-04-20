@@ -32,7 +32,16 @@ namespace SCOI_lab_1
         static extern void GlobalBinarize(byte[] bgrAValues, int count, int t);
 
         [DllImport("HightSpeedImageProc.dll", EntryPoint = "LocalBinarize", CallingConvention = CallingConvention.StdCall)]
-        static extern void LocalBinarize(byte[] bgrAValues, int[] size, int a, float k, int version, double[] test);
+        static extern void LocalBinarize(byte[] bgrAValues, int[] size, int a, float k, int version);
+
+        [DllImport("HightSpeedImageProc.dll", EntryPoint = "GetGauss", CallingConvention = CallingConvention.StdCall)]
+        public static extern void GetGauss(double[] out_val, double sig, int a, int b);
+
+        [DllImport("HightSpeedImageProc.dll", EntryPoint = "LineFilter", CallingConvention = CallingConvention.StdCall)]
+        static extern void LineFilter(byte[] bgrAValues, int[] size, double[] M, int a, int b, double[] test);
+
+        [DllImport("HightSpeedImageProc.dll", EntryPoint = "MedianFilter", CallingConvention = CallingConvention.StdCall)]
+        static extern void MedianFilter(byte[] bgrAValues, int[] size, int a, int b, double[] test);
         public Image image { get; set; }
 
         public DataTable GraphData;
@@ -268,7 +277,7 @@ namespace SCOI_lab_1
 
             return (GraphData, Bimage);
         }
-        public static Image CPU_GlobalBinarize(Image image, int version)
+        public static Image CPP_GlobalBinarize(Image image, int version)
         {
             Bitmap Bimage = new Bitmap(image);
             Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
@@ -300,7 +309,29 @@ namespace SCOI_lab_1
 
             return Bimage;
         }
-        public static Image CPU_LocalBinarize(Image image, int version, int a, float k)
+        public static Image CPP_LocalBinarize(Image image, int version, int a, float k)
+        {
+            Bitmap Bimage = new Bitmap(image);
+            Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
+            BitmapData bmpData =
+                Bimage.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            int bytes = Math.Abs(bmpData.Stride) * Bimage.Height;
+            byte[] bgrAValues = new byte[bytes];
+
+            System.Runtime.InteropServices.Marshal.Copy(ptr, bgrAValues, 0, bytes);
+
+            LocalBinarize(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, a, k, version);
+
+            System.Runtime.InteropServices.Marshal.Copy(bgrAValues, 0, ptr, bytes);
+
+            Bimage.UnlockBits(bmpData);
+
+            return Bimage;
+        }
+        public static Image CPP_LineFilter(Image image, List<double> M, int a, int b)
         {
             Bitmap Bimage = new Bitmap(image);
             Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
@@ -316,7 +347,31 @@ namespace SCOI_lab_1
 
             double[] test = new double[Bimage.Height * Bimage.Width];
 
-            LocalBinarize(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, a, k, version, test);
+            LineFilter(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, M.ToArray(), a, b, test);
+
+            System.Runtime.InteropServices.Marshal.Copy(bgrAValues, 0, ptr, bytes);
+
+            Bimage.UnlockBits(bmpData);
+
+            return Bimage;
+        }
+        public static Image CPP_MedianFilter(Image image, int a, int b)
+        {
+            Bitmap Bimage = new Bitmap(image);
+            Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
+            BitmapData bmpData =
+                Bimage.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            int bytes = Math.Abs(bmpData.Stride) * Bimage.Height;
+            byte[] bgrAValues = new byte[bytes];
+
+            System.Runtime.InteropServices.Marshal.Copy(ptr, bgrAValues, 0, bytes);
+
+            double[] test = new double[Bimage.Height * Bimage.Width];
+
+            MedianFilter(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, a, b, test);
 
             System.Runtime.InteropServices.Marshal.Copy(bgrAValues, 0, ptr, bytes);
 
@@ -366,20 +421,6 @@ namespace SCOI_lab_1
             iaPic.Dispose();
 
             return bmpPic;
-        }
-        public static Bitmap Resize(Image img, Size newSize)
-        {
-            if (img.Size != newSize)
-                return new Bitmap(img, newSize);
-            else
-                return (Bitmap)img;
-        }
-        public static Bitmap Resize(Image routine_img, Image resize_img)
-        {
-            if (routine_img.Size != resize_img.Size)
-                return new Bitmap(resize_img, new Size(routine_img.Width, routine_img.Height));
-            else
-                return (Bitmap)resize_img;
         }
         public static int Clamp(int value)
         {

@@ -63,6 +63,8 @@ namespace SCOI_lab_1
             KRtT.SetToolTip(KR4, "Критерий Сауволы");
             KRtT.SetToolTip(KR5, "Критерий Кристиана Вульфа");
             KRtT.SetToolTip(KR6, "Критерий Брэдли-Рота");
+
+            comboBox2.SelectedIndex = 0;
         }
         private void InitializeBackgroundWorker()
         {
@@ -619,27 +621,27 @@ namespace SCOI_lab_1
 
             if (KR1.BackgroundImage != null)
                 KR1.BackgroundImage.Dispose();
-            KR1.BackgroundImage = MyImage.CPU_GlobalBinarize(tmp, 0);
+            KR1.BackgroundImage = MyImage.CPP_GlobalBinarize(tmp, 0);
 
             if (KR2.BackgroundImage != null)
                 KR2.BackgroundImage.Dispose();
-            KR2.BackgroundImage = MyImage.CPU_GlobalBinarize(tmp, 1);
+            KR2.BackgroundImage = MyImage.CPP_GlobalBinarize(tmp, 1);
 
             if (KR3.BackgroundImage != null)
                 KR3.BackgroundImage.Dispose();
-            KR3.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 0, (int)BinarNUD1.Value, (float)kk[2]);
+            KR3.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 0, (int)BinarNUD1.Value, (float)kk[2]);
 
             if (KR4.BackgroundImage != null)
                 KR4.BackgroundImage.Dispose();
-            KR4.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 1, (int)BinarNUD1.Value, (float)kk[3]);
+            KR4.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 1, (int)BinarNUD1.Value, (float)kk[3]);
 
             if (KR5.BackgroundImage != null)
                 KR5.BackgroundImage.Dispose();
-            KR5.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 2, (int)BinarNUD1.Value, (float)kk[4]);
+            KR5.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 2, (int)BinarNUD1.Value, (float)kk[4]);
 
             if (KR6.BackgroundImage != null)
                 KR6.BackgroundImage.Dispose();
-            KR6.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 3, (int)BinarNUD1.Value, (float)kk[5]);
+            KR6.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 3, (int)BinarNUD1.Value, (float)kk[5]);
 
             tmp.Dispose();
         }
@@ -745,22 +747,22 @@ namespace SCOI_lab_1
                 switch (item.Name)
                 {
                     case "KR1":
-                        tmp = await Task.Run(() => MyImage.CPU_GlobalBinarize(BinarPchB.Image, 0));
+                        tmp = await Task.Run(() => MyImage.CPP_GlobalBinarize(BinarPchB.Image, 0));
                         break;
                     case "KR2":
-                        tmp = await Task.Run(() => MyImage.CPU_GlobalBinarize(BinarPchB.Image, 1));
+                        tmp = await Task.Run(() => MyImage.CPP_GlobalBinarize(BinarPchB.Image, 1));
                         break;
                     case "KR3":
-                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 0, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        tmp = await Task.Run(() => MyImage.CPP_LocalBinarize(BinarPchB.Image, 0, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
                         break;
                     case "KR4":
-                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 1, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        tmp = await Task.Run(() => MyImage.CPP_LocalBinarize(BinarPchB.Image, 1, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
                         break;
                     case "KR5":
-                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 2, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        tmp = await Task.Run(() => MyImage.CPP_LocalBinarize(BinarPchB.Image, 2, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
                         break;
                     case "KR6":
-                        tmp = await Task.Run(() => MyImage.CPU_LocalBinarize(BinarPchB.Image, 3, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
+                        tmp = await Task.Run(() => MyImage.CPP_LocalBinarize(BinarPchB.Image, 3, (int)BinarNUD1.Value, (float)BinarNUD2.Value));
                         break;
 
                     default:
@@ -787,6 +789,97 @@ namespace SCOI_lab_1
             KR_Refresh();
         }
 
+        private void Filter_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<double> Core = new List<double>();
+                int a = Matrix_textBox.Lines.Length;
+                int b = Matrix_textBox.Lines[0].Split(' ').Length;
+                bool error = false;
+                foreach (string str in Matrix_textBox.Lines)
+                {
+                    if(b != str.Split(' ').Length)
+                        error = true;
+                    foreach (string item in str.Split(' '))
+                    {
+                        if (item.Contains('/'))
+                        {
+                            Fraction tmp = new Fraction(item);
+                            Core.Add(tmp.toDouble() * (double)LineKoef.Value);
+                        }
+                        else
+                            Core.Add(Convert.ToDouble(item));
+                    }
+                }
+
+                if(!error)
+                {
+                    FilterAsync(1, a, b, Core);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        private void FLoadBut_Click(object sender, EventArgs e)
+        {
+            if (FilterPb.Image != null)
+                FilterPb.Image.Dispose();
+            else if (pictureBox1.Image != null)
+            {
+                Filter.Enabled = true;
+            }
+            if (pictureBox1.Image != null)
+                FilterPb.Image = new Bitmap(pictureBox1.Image);
+        }
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch ((sender as ComboBox).SelectedIndex)
+            {
+                case 0:
+                    LineKoef.Value = 1;
+                    break;
+                case 1:
+                    LineKoef.Value = (decimal)1 / 3;
+                    Matrix_textBox.Clear();
+                    Matrix_textBox.Lines = new string[3] { "-1 -1 -1", "0 0 0", "1 1 1" };
+                    break;
+                case 2:
+                    LineKoef.Value = (decimal)1 / 4;
+                    Matrix_textBox.Clear();
+                    Matrix_textBox.Lines = new string[3] { "-1 -2 -1", "0 0 0", "1 2 1" };
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void GenGauss_Click(object sender, EventArgs e)
+        {
+            double[] rez = new double[(int)MHeight.Value * (int)MWight.Value];
+            MyImage.GetGauss(rez, (double)Sig.Value, (int)MHeight.Value, (int)MWight.Value);
+
+            List<string> str = new List<string>();
+            for(int i = 0; i < (int)MHeight.Value; ++i)
+            {
+                string tmp = "";
+                for (int j = 0; j < (int)MWight.Value; ++j)
+                {
+                    tmp += Math.Round(rez[i * (int)MWight.Value + j], 4).ToString();
+                    if (j != (int)MWight.Value - 1)
+                        tmp += " ";
+                }
+                str.Add(tmp);
+            }
+            SumLbl.Text = "Сумма: " + rez.Sum();
+            Matrix_textBox.Clear();
+            Matrix_textBox.Lines = str.ToArray();
+        }
+        private void FMediaBut_Click(object sender, EventArgs e)
+        {
+            FilterAsync(2, (int)MHeight.Value, (int)MWight.Value);
+        }
         private void BinarNUD2_ValueChanged(object sender, EventArgs e)
         {
             if(max == (sender as NumericUpDown).Maximum && min == (sender as NumericUpDown).Minimum)
@@ -804,22 +897,22 @@ namespace SCOI_lab_1
                         break;
                     case "KR3":
                         KR3.BackgroundImage.Dispose();
-                        KR3.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 0, (int)BinarNUD1.Value, (float)num);
+                        KR3.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 0, (int)BinarNUD1.Value, (float)num);
                         kk[2] = num;
                         break;
                     case "KR4":
                         KR4.BackgroundImage.Dispose();
-                        KR4.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 1, (int)BinarNUD1.Value, (float)num);
+                        KR4.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 1, (int)BinarNUD1.Value, (float)num);
                         kk[3] = num;
                         break;
                     case "KR5":
                         KR5.BackgroundImage.Dispose();
-                        KR5.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 2, (int)BinarNUD1.Value, (float)num);
+                        KR5.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 2, (int)BinarNUD1.Value, (float)num);
                         kk[4] = num;
                         break;
                     case "KR6":
                         KR6.BackgroundImage.Dispose();
-                        KR6.BackgroundImage = MyImage.CPU_LocalBinarize(tmp, 3, (int)BinarNUD1.Value, (float)num);
+                        KR6.BackgroundImage = MyImage.CPP_LocalBinarize(tmp, 3, (int)BinarNUD1.Value, (float)num);
                         kk[5] = num;
                         break;
 
@@ -827,6 +920,28 @@ namespace SCOI_lab_1
                         break;
                 }
                 tmp.Dispose();
+            }
+        }
+
+        private async void FilterAsync(int vers, int a, int b, List<double> Core = null)
+        {
+            progressBar1.Value = 0;
+            Image tmpi;
+            if (vers == 1)
+                tmpi = await Task.Run(() => MyImage.CPP_LineFilter(FilterPb.Image, Core, a, b));
+            else
+                tmpi = await Task.Run(() => MyImage.CPP_MedianFilter(FilterPb.Image, a, b));
+
+            if (tmpi != null)
+            {
+                progressBar1.Value = 100;
+
+                pictureBox1.Image.Dispose();
+                pictureBox1.Image = tmpi;
+
+                if ((panel1.Controls[0] as MyCanvas).img != null)
+                    (panel1.Controls[0] as MyCanvas).img.Dispose();
+                (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
             }
         }
     }
