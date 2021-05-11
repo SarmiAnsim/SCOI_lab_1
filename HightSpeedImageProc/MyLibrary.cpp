@@ -3,6 +3,10 @@
 #include <vector>
 #include <queue>
 #include <list>
+#include <complex>
+#include <future>
+#include <thread>
+
 typedef unsigned char byte;
 # define M_PI           3.14159265358979323846  /* pi */
 
@@ -19,6 +23,7 @@ static unsigned index_;               // Current seq. position
 #define Brig(Arr,counter) (0.0721 * Arr[counter] + 0.7154 * Arr[counter + 1] + 0.2125 * Arr[counter + 2])
 #endif // !Brig
 
+using namespace std;
 
 class Color
 {
@@ -185,6 +190,127 @@ byte kthSmallest(byte arr[], int l, int r, int k)
     }
 
     return INT_MAX;
+}
+
+vector<complex<double>> DFT(const vector<complex<double>>& x, double n = 1)
+{
+    int N = x.size();
+    vector<complex<double>> G = {};
+    for (int u = 0; u < N; ++u)
+    {
+        G.push_back(0);
+        for (int k = 0; k < N; ++k)
+        {
+            double fi = -2.0 * M_PI * u * k / N;
+            complex<double> a(cos(fi), sin(fi));
+            G[u] += a * x[k];
+        }
+        G[u] *= n;
+    }
+    return G;
+}
+
+vector<complex<double>> FDFT(const vector<complex<double>>& x, int x0, int N, int s)
+{
+    vector<complex<double>> G(N);
+    if (N == 1)
+    {
+        G[0] = x[x0];
+    }
+    else
+    {
+        G = FDFT(x, x0, N / 2, 2 * s);
+        vector<complex<double>> two = FDFT(x, x0 + s, N / 2, 2 * s);
+        G.insert(G.end(), two.begin(), two.end());
+
+        for (int k = 0; k < N / 2; ++k)
+        {
+            complex<double> t = G[k];
+            double u = -2.0 * M_PI * k / N;
+            complex<double> tmp(cos(u), sin(u));
+            G[k] = t + tmp * G[k + N / 2];
+            G[k + N / 2] = t - tmp * G[k + N / 2];
+        }
+    }
+
+    return G;
+}
+
+vector<vector<vector<complex<double>>>> two_three_DFT(const vector<vector<vector<complex<double>>>>& x, int direction = 1)
+{
+    vector<vector<vector<complex<double>>>> G1(3);
+    complex<double> height(x[0].size(), 0), width(x[0][0].size(), 0);
+
+    for (size_t u = 0; u < x[0].size(); ++u)
+    {
+        auto fut1 = async(FDFT, x[0][u], 0, (int)x[0][u].size(), 1);
+        auto fut2 = async(FDFT, x[1][u], 0, (int)x[1][u].size(), 1);
+        auto fut3 = async(FDFT, x[2][u], 0, (int)x[2][u].size(), 1);
+
+        G1[0].push_back(fut1.get());
+        G1[1].push_back(fut2.get());
+        G1[2].push_back(fut3.get());
+
+        //G1[0].push_back(FDFT(x[0][u], 0, (int)x[0][u].size(), 1));
+        //G1[1].push_back(FDFT(x[1][u], 0, (int)x[1][u].size(), 1));
+        //G1[2].push_back(FDFT(x[2][u], 0, (int)x[2][u].size(), 1));
+    }
+
+    vector<vector<vector<complex<double>>>> G;
+    for (int i = 0; i < 3; ++i)
+    {
+        vector<vector<complex<double>>> init(x[0].size());
+        G.push_back(init);
+    }
+
+    for (size_t u = 0; u < x[0][0].size(); ++u)
+    {
+        vector<vector<complex<double>>> tmp(3);
+        for (size_t k = 0; k < x[0].size(); ++k)
+        {
+            if (direction == 1)
+            {
+                tmp[0].push_back(G1[0][k][u] / width);
+                tmp[1].push_back(G1[1][k][u] / width);
+                tmp[2].push_back(G1[2][k][u] / width);
+            }
+            else
+            {
+                tmp[0].push_back(G1[0][k][u]);
+                tmp[1].push_back(G1[1][k][u]);
+                tmp[2].push_back(G1[2][k][u]);
+            }
+        }
+
+        auto fut1 = async(FDFT, tmp[0], 0, tmp[0].size(), 1);
+        auto fut2 = async(FDFT, tmp[1], 0, tmp[1].size(), 1);
+        auto fut3 = async(FDFT, tmp[2], 0, tmp[2].size(), 1);
+
+        tmp[0] = fut1.get();
+        tmp[1] = fut2.get();
+        tmp[2] = fut3.get();
+
+        //tmp[0] = FDFT(tmp[0], 0, tmp[0].size(), 1);
+        //tmp[1] = FDFT(tmp[1], 0, tmp[1].size(), 1);
+        //tmp[2] = FDFT(tmp[2], 0, tmp[2].size(), 1);
+
+        for (size_t k = 0; k < x[0].size(); ++k)
+        {
+            if (direction == 1)
+            {
+                G[0][k].push_back(tmp[0][k] / height);
+                G[1][k].push_back(tmp[1][k] / height);
+                G[2][k].push_back(tmp[2][k] / height);
+            }
+            else
+            {
+                G[0][k].push_back(tmp[0][k]);
+                G[1][k].push_back(tmp[1][k]);
+                G[2][k].push_back(tmp[2][k]);
+            }
+        }
+    }
+    return G;
 }
 
 extern "C"
@@ -491,24 +617,6 @@ extern "C"
                     kthSmallest(data2.data(), 0, data2.size() - 1, (data2.size() - 1) / 2 + 1),
                     kthSmallest(data3.data(), 0, data3.size() - 1, (data3.size() - 1) / 2 + 1) });
 
-                /*std::vector<const byte*> ptr1(data1.size());
-                std::vector<const byte*> ptr2(data2.size());
-                std::vector<const byte*> ptr3(data3.size());
-                transform(data1.begin(), data1.end(), ptr1.begin(), [](const byte& d) {return &d; });
-                transform(data2.begin(), data2.end(), ptr2.begin(), [](const byte& d) {return &d; });
-                transform(data3.begin(), data3.end(), ptr3.begin(), [](const byte& d) {return &d; });
-                auto mid1 = next(ptr1.begin(), data1.size() / 2);
-                auto mid2 = next(ptr2.begin(), data2.size() / 2);
-                auto mid3 = next(ptr3.begin(), data3.size() / 2);
-                nth_element(ptr1.begin(), mid1, ptr1.end(), [](const byte* lhs, const byte* rhs) {return *lhs < *rhs; });
-                nth_element(ptr2.begin(), mid2, ptr2.end(), [](const byte* lhs, const byte* rhs) {return *lhs < *rhs; });
-                nth_element(ptr3.begin(), mid3, ptr3.end(), [](const byte* lhs, const byte* rhs) {return *lhs < *rhs; });
-                ptrdiff_t pos1 = *mid1 - &data1[0];
-                ptrdiff_t pos2 = *mid2 - &data2[0];
-                ptrdiff_t pos3 = *mid3 - &data3[0];
-
-                out_test[i * size[1] + j] = data1[pos1];
-                S.push({ data1[pos1], data2[pos2], data3[pos3] });*/
                 data1.clear();
                 data1.~vector();
                 data2.clear();
@@ -527,6 +635,95 @@ extern "C"
                 bgrAValues[4 * (i * size[1] + j) + 2] = S.front()[2];
 
                 S.pop();
+            }
+        }
+    }
+
+    __declspec(dllexport) void __stdcall GetDFT(byte* bgrAValues, int* size, double* out_DFTone, double* out_DFTtwo, double* max)
+    {
+        vector<vector<vector<complex<double>>>> x(3);
+        double maxB = 0, maxG = 0, maxR = 0;
+
+        for (int i = 0; i < size[0]; ++i)
+        {
+            vector<vector<complex<double>>> tmp(3);
+            for (int j = 0; j < size[1]; ++j)
+            {
+                tmp[0].push_back(pow((-1), i+j) * (double)bgrAValues[4 * (i * size[1] + j)]);
+                tmp[1].push_back(pow((-1), i+j) * (double)bgrAValues[4 * (i * size[1] + j) + 1]);
+                tmp[2].push_back(pow((-1), i+j) * (double)bgrAValues[4 * (i * size[1] + j) + 2]);
+            }
+            x[0].push_back(tmp[0]);
+            x[1].push_back(tmp[1]);
+            x[2].push_back(tmp[2]);
+        }
+
+        vector<vector<vector<complex<double>>>> G = two_three_DFT(x);
+        //throw "Here there are no errors";
+
+        for (int i = 0; i < size[0]; ++i)
+        {
+            for (int j = 0; j < size[1]; ++j)
+            {
+                out_DFTone[3 * (i * size[1] + j)] = G[0][i][j].real();
+                out_DFTone[3 * (i * size[1] + j) + 1] = G[1][i][j].real();
+                out_DFTone[3 * (i * size[1] + j) + 2] = G[2][i][j].real();
+
+                out_DFTtwo[3 * (i * size[1] + j)] = G[0][i][j].imag();
+                out_DFTtwo[3 * (i * size[1] + j) + 1] = G[1][i][j].imag();
+                out_DFTtwo[3 * (i * size[1] + j) + 2] = G[2][i][j].imag();
+
+                maxB = (log(abs(G[0][i][j]) + 1) > maxB) ? (log(abs(G[0][i][j]) + 1)) : maxB;
+                maxG = (log(abs(G[1][i][j]) + 1) > maxG) ? (log(abs(G[1][i][j]) + 1)) : maxG;
+                maxR = (log(abs(G[2][i][j]) + 1) > maxR) ? (log(abs(G[2][i][j]) + 1)) : maxR;
+            }
+        }
+        for (int i = 0; i < size[0]; ++i)
+        {
+            for (int j = 0; j < size[1]; ++j)
+            {
+
+                bgrAValues[4 * (i * size[1] + j)] = Color::Clamp(round((log(abs(G[0][i][j]) + 1) * 255 / maxB)));
+                bgrAValues[4 * (i * size[1] + j) + 1] = Color::Clamp(round((log(abs(G[1][i][j]) + 1) * 255 / maxG)));
+                bgrAValues[4 * (i * size[1] + j) + 2] = Color::Clamp(round((log(abs(G[2][i][j]) + 1) * 255 / maxR)));
+            }
+        }
+
+    }
+
+    __declspec(dllexport) void __stdcall ImageFromDFT(byte* bgrAValues, int* size, double* DFTone, double* DFTtwo)
+    {
+        vector<vector<vector<complex<double>>>> x(3);
+
+        for (int i = 0; i < size[0]; ++i)
+        {
+            vector<vector<complex<double>>> tmp(3);
+            for (int j = 0; j < size[1]; ++j)
+            {
+                double filter = (double)bgrAValues[4 * (i * size[1] + j)] / 255;
+                complex<double> 
+                    a(filter * DFTone[3 * (i * size[1] + j)], filter * -DFTtwo[3 * (i * size[1] + j)]),
+                    b(filter * DFTone[3 * (i * size[1] + j) + 1], filter * -DFTtwo[3 * (i * size[1] + j) + 1]),
+                    c(filter * DFTone[3 * (i * size[1] + j) + 2], filter * -DFTtwo[3 * (i * size[1] + j) + 2]);
+                tmp[0].push_back(a);
+                tmp[1].push_back(b);
+                tmp[2].push_back(c);
+            }
+            x[0].push_back(tmp[0]);
+            x[1].push_back(tmp[1]);
+            x[2].push_back(tmp[2]);
+        }
+
+        vector<vector<vector<complex<double>>>> G = two_three_DFT(x, -1);
+
+        //throw "Here there are no errors";
+        for (int i = 0; i < size[0]; ++i)
+        {
+            for (int j = 0; j < size[1]; ++j)
+            {
+                bgrAValues[4 * (i * size[1] + j)] = Color::Clamp(pow((-1), i + j) * G[0][i][j].real());
+                bgrAValues[4 * (i * size[1] + j) + 1] = Color::Clamp(pow((-1), i + j) * G[1][i][j].real());
+                bgrAValues[4 * (i * size[1] + j) + 2] = Color::Clamp(pow((-1), i + j) * G[2][i][j].real());
             }
         }
     }

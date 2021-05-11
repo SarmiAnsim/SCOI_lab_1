@@ -42,6 +42,12 @@ namespace SCOI_lab_1
 
         [DllImport("HightSpeedImageProc.dll", EntryPoint = "MedianFilter", CallingConvention = CallingConvention.StdCall)]
         static extern void MedianFilter(byte[] bgrAValues, int[] size, int a, int b, double[] test);
+
+        [DllImport("HightSpeedImageProc.dll", EntryPoint = "GetDFT", CallingConvention = CallingConvention.StdCall)]
+        static extern void GetDFT(byte[] bgrAValues, int[] size, double[] out_DFTone, double[] out_DFTtwo, double[] max);
+
+        [DllImport("HightSpeedImageProc.dll", EntryPoint = "ImageFromDFT", CallingConvention = CallingConvention.StdCall)]
+        static extern void ImageFromDFT(byte[] bgrAValues, int[] size, double[] DFTone, double[] DFTtwo);
         public Image image { get; set; }
 
         public DataTable GraphData;
@@ -379,7 +385,55 @@ namespace SCOI_lab_1
 
             return Bimage;
         }
-        public static Image SetImgChannelValue(Image imgPic, float imgOpac, int imgRed = 1, int imgGreen = 1, int imgBlue = 1)
+        public static (Image, double[], double[]) CPP_GetDFT(Image image)
+        {
+            Bitmap Bimage = new Bitmap(image);
+            Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
+            BitmapData bmpData =
+                Bimage.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            int bytes = Math.Abs(bmpData.Stride) * Bimage.Height;
+            byte[] bgrAValues = new byte[bytes];
+
+            System.Runtime.InteropServices.Marshal.Copy(ptr, bgrAValues, 0, bytes);
+
+            double[] DFTone = new double[3 * Bimage.Height * Bimage.Width];
+            double[] DFTtwo = new double[3 * Bimage.Height * Bimage.Width];
+            double[] max = new double[] { 0 };
+
+            GetDFT(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, DFTone, DFTtwo, max);
+
+            System.Runtime.InteropServices.Marshal.Copy(bgrAValues, 0, ptr, bytes);
+
+            Bimage.UnlockBits(bmpData);
+
+            return (Bimage, DFTone, DFTtwo);
+        }
+        public static Image CPP_ImageFromDFT(Image image, double[] DFTone, double[] DFTtwo)
+        {
+            Bitmap Bimage = new Bitmap(image);
+            Rectangle rect = new Rectangle(0, 0, Bimage.Width, Bimage.Height);
+            BitmapData bmpData =
+                Bimage.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            int bytes = Math.Abs(bmpData.Stride) * Bimage.Height;
+            byte[] bgrAValues = new byte[bytes];
+
+            System.Runtime.InteropServices.Marshal.Copy(ptr, bgrAValues, 0, bytes);
+
+            ImageFromDFT(bgrAValues, new int[2] { Bimage.Height, Bimage.Width }, DFTone, DFTtwo);
+
+            System.Runtime.InteropServices.Marshal.Copy(bgrAValues, 0, ptr, bytes);
+
+            Bimage.UnlockBits(bmpData);
+
+            return Bimage;
+        }
+        public static Image SetImgChannelValue(Image imgPic, float imgOpac, float imgRed = 1, float imgGreen = 1, float imgBlue = 1)
         {
             Bitmap bmpPic = new Bitmap(imgPic.Width, imgPic.Height);
             Graphics gfxPic = Graphics.FromImage(bmpPic);

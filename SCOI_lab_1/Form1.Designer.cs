@@ -76,6 +76,20 @@
             this.GenGauss = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.Sig = new System.Windows.Forms.NumericUpDown();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.SymmetryChB = new System.Windows.Forms.CheckBox();
+            this.nUDN = new System.Windows.Forms.NumericUpDown();
+            this.ValueK = new System.Windows.Forms.NumericUpDown();
+            this.VisualK = new System.Windows.Forms.NumericUpDown();
+            this.FilterName = new System.Windows.Forms.ComboBox();
+            this.FilterType = new System.Windows.Forms.ComboBox();
+            this.FourierTransform = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.ChFilterPb = new System.Windows.Forms.PictureBox();
+            this.ChFLoadBut = new System.Windows.Forms.Button();
+            this.ChFilter = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.KRtT = new System.Windows.Forms.ToolTip(this.components);
@@ -102,6 +116,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.MWight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FilterPb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Sig)).BeginInit();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDN)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ValueK)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.VisualK)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FourierTransform)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ChFilterPb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
@@ -168,6 +189,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Multiline = true;
@@ -176,6 +198,7 @@
             this.tabControl1.ShowToolTips = true;
             this.tabControl1.Size = new System.Drawing.Size(357, 634);
             this.tabControl1.TabIndex = 0;
+            this.KRtT.SetToolTip(this.tabControl1, "Частотная фильтрация");
             // 
             // tabPage1
             // 
@@ -590,7 +613,8 @@
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(349, 605);
             this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Фильтрация";
+            this.tabPage4.Text = "ПФ";
+            this.tabPage4.ToolTipText = "Пространственная фильтрация";
             // 
             // FMediaBut
             // 
@@ -772,6 +796,209 @@
             0,
             0});
             // 
+            // tabPage5
+            // 
+            this.tabPage5.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabPage5.Controls.Add(this.SymmetryChB);
+            this.tabPage5.Controls.Add(this.nUDN);
+            this.tabPage5.Controls.Add(this.ValueK);
+            this.tabPage5.Controls.Add(this.VisualK);
+            this.tabPage5.Controls.Add(this.FilterName);
+            this.tabPage5.Controls.Add(this.FilterType);
+            this.tabPage5.Controls.Add(this.FourierTransform);
+            this.tabPage5.Controls.Add(this.panel2);
+            this.tabPage5.Controls.Add(this.ChFilterPb);
+            this.tabPage5.Controls.Add(this.ChFLoadBut);
+            this.tabPage5.Controls.Add(this.ChFilter);
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(349, 605);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "ЧФ";
+            // 
+            // SymmetryChB
+            // 
+            this.SymmetryChB.Appearance = System.Windows.Forms.Appearance.Button;
+            this.SymmetryChB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.SymmetryChB.Image = global::SCOI_lab_1.Properties.Resources.symmetry32;
+            this.SymmetryChB.Location = new System.Drawing.Point(6, 191);
+            this.SymmetryChB.Name = "SymmetryChB";
+            this.SymmetryChB.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.SymmetryChB.Size = new System.Drawing.Size(32, 32);
+            this.SymmetryChB.TabIndex = 13;
+            this.KRtT.SetToolTip(this.SymmetryChB, "Симметрия относительно центра Фурье-образа");
+            this.SymmetryChB.UseVisualStyleBackColor = true;
+            this.SymmetryChB.CheckedChanged += new System.EventHandler(this.SymmetryChB_CheckedChanged);
+            // 
+            // nUDN
+            // 
+            this.nUDN.Enabled = false;
+            this.nUDN.Location = new System.Drawing.Point(150, 198);
+            this.nUDN.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nUDN.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nUDN.Name = "nUDN";
+            this.nUDN.Size = new System.Drawing.Size(89, 22);
+            this.nUDN.TabIndex = 12;
+            this.nUDN.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // ValueK
+            // 
+            this.ValueK.DecimalPlaces = 3;
+            this.ValueK.Enabled = false;
+            this.ValueK.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.ValueK.Location = new System.Drawing.Point(252, 198);
+            this.ValueK.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ValueK.Name = "ValueK";
+            this.ValueK.Size = new System.Drawing.Size(91, 22);
+            this.ValueK.TabIndex = 11;
+            this.KRtT.SetToolTip(this.ValueK, "Коэффициент усиления восстановления");
+            this.ValueK.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ValueK.ValueChanged += new System.EventHandler(this.ValueK_ValueChanged);
+            // 
+            // VisualK
+            // 
+            this.VisualK.DecimalPlaces = 3;
+            this.VisualK.Enabled = false;
+            this.VisualK.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.VisualK.Location = new System.Drawing.Point(50, 197);
+            this.VisualK.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.VisualK.Name = "VisualK";
+            this.VisualK.Size = new System.Drawing.Size(80, 22);
+            this.VisualK.TabIndex = 10;
+            this.KRtT.SetToolTip(this.VisualK, "Коэффициент усиления визуализации Фурье-образа изображения");
+            this.VisualK.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.VisualK.ValueChanged += new System.EventHandler(this.VisualK_ValueChanged);
+            // 
+            // FilterName
+            // 
+            this.FilterName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FilterName.FormattingEnabled = true;
+            this.FilterName.Items.AddRange(new object[] {
+            "Идеальный фильтр",
+            "Фильтр Баттерворта",
+            "Фильтр Гаусса"});
+            this.FilterName.Location = new System.Drawing.Point(150, 161);
+            this.FilterName.Name = "FilterName";
+            this.FilterName.Size = new System.Drawing.Size(193, 24);
+            this.FilterName.TabIndex = 9;
+            this.FilterName.SelectedIndexChanged += new System.EventHandler(this.FilterName_SelectedIndexChanged);
+            // 
+            // FilterType
+            // 
+            this.FilterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FilterType.FormattingEnabled = true;
+            this.FilterType.Items.AddRange(new object[] {
+            "Низкочастотный",
+            "Высокочастотный"});
+            this.FilterType.Location = new System.Drawing.Point(11, 161);
+            this.FilterType.Name = "FilterType";
+            this.FilterType.Size = new System.Drawing.Size(133, 24);
+            this.FilterType.TabIndex = 8;
+            this.FilterType.SelectedIndexChanged += new System.EventHandler(this.FilterType_SelectedIndexChanged);
+            // 
+            // FourierTransform
+            // 
+            this.FourierTransform.ContextMenuStrip = this.contextMenuStrip1;
+            this.FourierTransform.Location = new System.Drawing.Point(11, 51);
+            this.FourierTransform.Name = "FourierTransform";
+            this.FourierTransform.Size = new System.Drawing.Size(133, 104);
+            this.FourierTransform.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.FourierTransform.TabIndex = 6;
+            this.FourierTransform.TabStop = false;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 28);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 24);
+            this.toolStripMenuItem1.Text = "Сохранить";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(3, 225);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(343, 343);
+            this.panel2.TabIndex = 7;
+            // 
+            // ChFilterPb
+            // 
+            this.ChFilterPb.Location = new System.Drawing.Point(148, 3);
+            this.ChFilterPb.Name = "ChFilterPb";
+            this.ChFilterPb.Size = new System.Drawing.Size(198, 152);
+            this.ChFilterPb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ChFilterPb.TabIndex = 3;
+            this.ChFilterPb.TabStop = false;
+            // 
+            // ChFLoadBut
+            // 
+            this.ChFLoadBut.Location = new System.Drawing.Point(6, 3);
+            this.ChFLoadBut.Name = "ChFLoadBut";
+            this.ChFLoadBut.Size = new System.Drawing.Size(138, 42);
+            this.ChFLoadBut.TabIndex = 4;
+            this.ChFLoadBut.Text = "Скопировать изображение";
+            this.ChFLoadBut.UseVisualStyleBackColor = true;
+            this.ChFLoadBut.Click += new System.EventHandler(this.ChFLoadBut_Click);
+            // 
+            // ChFilter
+            // 
+            this.ChFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.ChFilter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ChFilter.Enabled = false;
+            this.ChFilter.Location = new System.Drawing.Point(3, 568);
+            this.ChFilter.Name = "ChFilter";
+            this.ChFilter.Size = new System.Drawing.Size(343, 34);
+            this.ChFilter.TabIndex = 5;
+            this.ChFilter.Text = "Фильтрация";
+            this.ChFilter.UseVisualStyleBackColor = false;
+            this.ChFilter.Click += new System.EventHandler(this.ChFilter_Click);
+            // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -819,6 +1046,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.MWight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FilterPb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Sig)).EndInit();
+            this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nUDN)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ValueK)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.VisualK)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FourierTransform)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ChFilterPb)).EndInit();
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
@@ -876,6 +1110,20 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label SumLbl;
         private System.Windows.Forms.Button FMediaBut;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.Button ChFilter;
+        private System.Windows.Forms.Button ChFLoadBut;
+        private System.Windows.Forms.PictureBox ChFilterPb;
+        private System.Windows.Forms.PictureBox FourierTransform;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ComboBox FilterName;
+        private System.Windows.Forms.ComboBox FilterType;
+        private System.Windows.Forms.NumericUpDown nUDN;
+        private System.Windows.Forms.NumericUpDown ValueK;
+        private System.Windows.Forms.NumericUpDown VisualK;
+        private System.Windows.Forms.CheckBox SymmetryChB;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

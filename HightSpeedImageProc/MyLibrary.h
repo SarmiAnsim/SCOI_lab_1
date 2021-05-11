@@ -38,3 +38,9 @@ extern "C" MYLIBRARY_API void LineFilter(
 
 extern "C" MYLIBRARY_API void MedianFilter(
     byte * bgrAValues, int* size, int a, int b, long double* out_test);
+
+extern "C" MYLIBRARY_API void GetDFT(
+    byte * bgrAValues, int* size, double* out_DFTone, double* out_DFTtwo, double* max);
+
+extern "C" MYLIBRARY_API void ImageFromDFT(
+    byte * bgrAValues, int* size, double* DFTone, double* DFTtwo);

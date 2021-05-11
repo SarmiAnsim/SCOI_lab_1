@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,8 @@ namespace SCOI_lab_1
         List<Layer> layers = new List<Layer>();
         decimal[] kk = { 0, 0, -0.2m, 0.2m, 0.5m, 0.15m };
         decimal max = 10, min = -10;
+        (Image, double[], double[]) filter;
+        Image tmpImage;
         public Form1()
         {
             InitializeComponent();
@@ -35,6 +39,16 @@ namespace SCOI_lab_1
             canvas1.cmbb = comboBox1;
             panel1.Controls.Add(canvas1);
             canvas1.Dock = DockStyle.Fill;
+
+            var canvas2 = new MyFCanvas();
+            canvas2.Name = "Fcanvas";
+            canvas2.pchB = FourierTransform;
+            canvas2.Ftype = FilterType;
+            canvas2.Fname = FilterName;
+            canvas2.FN = nUDN;
+            canvas2.symmetry_mode = SymmetryChB.Checked;
+            panel2.Controls.Add(canvas2);
+            canvas2.Dock = DockStyle.Fill;
 
             comboBox1.SelectedIndex = 0;
             comboBox1.SelectedIndexChanged += new EventHandler(this.CBSelectedIndexChanged);
@@ -65,6 +79,8 @@ namespace SCOI_lab_1
             KRtT.SetToolTip(KR6, "Критерий Брэдли-Рота");
 
             comboBox2.SelectedIndex = 0;
+            FilterType.SelectedIndex = 0;
+            FilterName.SelectedIndex = 0;
         }
         private void InitializeBackgroundWorker()
         {
@@ -927,6 +943,165 @@ namespace SCOI_lab_1
                 }
                 tmp.Dispose();
             }
+        }
+
+        private void ChFLoadBut_Click(object sender, EventArgs e)
+        {
+            if (ChFilterPb.Image != null)
+                ChFilterPb.Image.Dispose();
+            if (pictureBox1.Image != null)
+            {
+                ChFilterPb.Image = new Bitmap(pictureBox1.Image);
+                (ChFilterPb.Image as Bitmap).SetResolution(pictureBox1.Image.HorizontalResolution, pictureBox1.Image.VerticalResolution);
+
+                int width = ChFilterPb.Image.Width;
+                int height = ChFilterPb.Image.Height;
+
+                var p = Math.Log(width, 2);
+                if (p != Math.Floor(p))
+                    width = (int)Math.Pow(2, Math.Ceiling(p));
+                p = Math.Log(height, 2);
+                if (p != Math.Floor(p))
+                    height = (int)Math.Pow(2, Math.Ceiling(p));
+
+                Bitmap _tmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+                _tmp.SetResolution(ChFilterPb.Image.HorizontalResolution, ChFilterPb.Image.VerticalResolution);
+
+                Graphics g = Graphics.FromImage(_tmp);
+                g.DrawImageUnscaled(ChFilterPb.Image, 0, 0);
+
+                ChFLoadAsync(new Bitmap(_tmp));
+            }
+        }
+
+        private void ChFilter_Click(object sender, EventArgs e)
+        {
+            ChFilter.Enabled = false;
+            ChFilterAsync(new Bitmap(FourierTransform.Image));
+        }
+
+        private void VisualK_ValueChanged(object sender, EventArgs e)
+        {
+            float val = (float)(sender as NumericUpDown).Value;
+            if ((panel2.Controls[0] as MyFCanvas).FourierTransform != null)
+                (panel2.Controls[0] as MyFCanvas).FourierTransform.Dispose();
+            (panel2.Controls[0] as MyFCanvas).FourierTransform = new Bitmap(MyImage.SetImgChannelValue(filter.Item1, 1, val, val, val), (panel2.Controls[0] as MyFCanvas).Size);
+        }
+        private void ValueK_ValueChanged(object sender, EventArgs e)
+        {
+            float val = (float)(sender as NumericUpDown).Value;
+            if (pictureBox1.Image != null && tmpImage != null)
+                pictureBox1.Image.Dispose();
+            if (tmpImage != null)
+                pictureBox1.Image = MyImage.SetImgChannelValue(tmpImage, 1, val, val, val);
+        }
+        private void SymmetryChB_CheckedChanged(object sender, EventArgs e)
+        {
+            (panel2.Controls[0] as MyFCanvas).symmetry_mode = (sender as CheckBox).Checked;
+            (panel2.Controls[0] as MyFCanvas).RefreshFurierObr();
+        }
+        private async void ChFLoadAsync(Image ChFImage)
+        {
+            progressBar1.Value = 0;
+            ChFLoadBut.Enabled = false;
+            (Image, double[], double[]) tmpidd = await Task.Run(() => MyImage.CPP_GetDFT(ChFImage));
+
+            if (tmpidd.Item1 != null)
+            {
+                progressBar1.Value = 100;
+
+                if ((panel2.Controls[0] as MyFCanvas).FourierTransform != null)
+                    (panel2.Controls[0] as MyFCanvas).FourierTransform.Dispose();
+                (panel2.Controls[0] as MyFCanvas).FourierTransform = new Bitmap(tmpidd.Item1, (panel2.Controls[0] as MyFCanvas).Size);
+                (panel2.Controls[0] as MyFCanvas).NewFilterSize(tmpidd.Item1.Size);
+
+                if(filter.Item1 != null)
+                    filter.Item1.Dispose();
+                filter = tmpidd;
+            }
+            ChFImage.Dispose();
+            FilterType.Enabled = true;
+            FilterName.Enabled = true;
+            VisualK.Enabled = true;
+            ChFilter.Enabled = true;
+            ChFLoadBut.Enabled = true;
+        }
+        private async void ChFilterAsync(Image FTImage)
+        {
+            progressBar1.Value = 0;
+            Image tmpi = await Task.Run(() => MyImage.CPP_ImageFromDFT(FTImage, filter.Item2, filter.Item3));
+            (tmpi as Bitmap).SetResolution(pictureBox1.Image.HorizontalResolution, pictureBox1.Image.VerticalResolution);
+
+            Bitmap new_bitamp_ret = new Bitmap(pictureBox1.Image.Width, pictureBox1.Image.Height, PixelFormat.Format24bppRgb);
+            new_bitamp_ret.SetResolution(pictureBox1.Image.HorizontalResolution, pictureBox1.Image.VerticalResolution);
+            using (Graphics g1 = Graphics.FromImage(new_bitamp_ret))
+            {
+                g1.DrawImageUnscaled(tmpi, 0, 0);
+            }
+
+            if (new_bitamp_ret != null)
+            {
+                progressBar1.Value = 100;
+
+                pictureBox1.Image.Dispose();
+                pictureBox1.Image = new_bitamp_ret;
+
+                if ((panel1.Controls[0] as MyCanvas).img != null)
+                    (panel1.Controls[0] as MyCanvas).img.Dispose();
+                (panel1.Controls[0] as MyCanvas).img = new Bitmap(pictureBox1.Image);
+
+                tmpImage = new Bitmap(pictureBox1.Image);
+            }
+            tmpi.Dispose();
+            FTImage.Dispose();
+            ValueK.Enabled = true;
+            ChFilter.Enabled = true;
+            button3.Enabled = true;
+        }
+
+        private void FilterName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((sender as ComboBox).SelectedIndex == 1)
+                nUDN.Enabled = true;
+            else
+                nUDN.Enabled = false;
+
+            (panel2.Controls[0] as MyFCanvas).RefreshFurierObr();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (FourierTransform.Image != null) //если в pictureBox есть изображение
+            {
+                //создание диалогового окна "Сохранить как..", для сохранения изображения
+                SaveFileDialog savedialog = new SaveFileDialog();
+                savedialog.Title = "Сохранить картинку как...";
+                //отображать ли предупреждение, если пользователь указывает имя уже существующего файла
+                savedialog.OverwritePrompt = true;
+                //отображать ли предупреждение, если пользователь указывает несуществующий путь
+                savedialog.CheckPathExists = true;
+                //список форматов файла, отображаемый в поле "Тип файла"
+                savedialog.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+                //отображается ли кнопка "Справка" в диалоговом окне
+                savedialog.ShowHelp = true;
+                if (savedialog.ShowDialog() == DialogResult.OK) //если в диалоговом окне нажата кнопка "ОК"
+                {
+                    try
+                    {
+                        FourierTransform.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Невозможно сохранить изображение", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void FilterType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            (panel2.Controls[0] as MyFCanvas).RefreshFurierObr();
         }
 
         private async void FilterAsync(int vers, int a, int b, List<double> Core = null)
