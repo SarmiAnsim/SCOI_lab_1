@@ -853,6 +853,7 @@
             0,
             0,
             0});
+            this.nUDN.ValueChanged += new System.EventHandler(this.nUDN_ValueChanged);
             // 
             // ValueK
             // 

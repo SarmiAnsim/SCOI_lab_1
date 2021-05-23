@@ -264,47 +264,10 @@ namespace SCOI_lab_1
                 g_layer2.DrawEllipse(pen, figures[i].Rect);
                 g_layer2.DrawEllipse(new Pen(Color.FromArgb(255, 200, 127, 0), 2), figures[i].InsideRect);
 
-                //MyFigure new_tmp = figures[i].PointInFilter(layer1.Size);
-
-                //GraphicsPath path = new GraphicsPath();
-                //path.AddEllipse(new_tmp.Rect);
-                //path.AddEllipse(new_tmp.InsideRect);
-
-                //GraphicsPath sypath = new GraphicsPath();
-                //sypath.AddEllipse(new_tmp.SyRect);
-                //sypath.AddEllipse(new_tmp.InsideSyRect);
-
-                //PathGradientBrush pthGrBrush = new PathGradientBrush(path);
-                //PathGradientBrush sypthGrBrush = new PathGradientBrush(sypath);
-
-                //pthGrBrush.WrapMode = WrapMode.Tile;
-                //pthGrBrush.InterpolationColors = GetColorBlend(Ftype.SelectedIndex, Fname.SelectedIndex, new_tmp.Size.Width, new_tmp.inSize.Width, (int)FN.Value);
-
-                //sypthGrBrush.WrapMode = WrapMode.Tile;
-                //sypthGrBrush.InterpolationColors = pthGrBrush.InterpolationColors;
-
-                //if (Ftype.SelectedIndex == 0)
-                //{
-                //    g_layer1.FillPath(Fname.SelectedIndex > 0 ? pthGrBrush : Brushes.White, path);
-                //}
-                //else
-                //{ 
-                //    g_layer1.FillPath(Fname.SelectedIndex > 0 ? pthGrBrush : Brushes.Black, path);
-                //}
-
-
                 if (symmetry_mode)
                 {
                     g_layer2.DrawEllipse(pen, figures[i].SyRect);
                     g_layer2.DrawEllipse(new Pen(Color.FromArgb(255, 200, 127, 0), 2), figures[i].InsideSyRect);
-                    //if (Ftype.SelectedIndex == 0)
-                    //{
-                    //    g_layer1.FillPath(Fname.SelectedIndex > 0 ? sypthGrBrush : Brushes.White, sypath);
-                    //}
-                    //else
-                    //{
-                    //    g_layer1.FillPath(Fname.SelectedIndex > 0 ? sypthGrBrush : Brushes.Black, sypath);
-                    //}
                 }
             }
 

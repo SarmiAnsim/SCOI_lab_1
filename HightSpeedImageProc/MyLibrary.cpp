@@ -1,13 +1,15 @@
 #include "pch.h"
-#include <math.h>
+//#include <math.h>
 #include <vector>
 #include <queue>
 #include <list>
 #include <complex>
 #include <future>
 #include <thread>
+#include <execution>
+#include <algorithm>
 
-typedef unsigned char byte;
+typedef unsigned char Byte;
 # define M_PI           3.14159265358979323846  /* pi */
 
 // DLL internal state variables:
@@ -28,39 +30,39 @@ using namespace std;
 class Color
 {
 public:
-    byte A = 0, R = 0, G = 0, B = 0;
+    Byte A = 0, R = 0, G = 0, B = 0;
     Color() {}
-    Color(byte a, byte r, byte g, byte b) : A(a), R(r), G(g), B(b) {}
+    Color(Byte a, Byte r, Byte g, Byte b) : A(a), R(r), G(g), B(b) {}
 
-    static Color FromArgb(byte a, byte r, byte g, byte b)
+    static Color FromArgb(Byte a, Byte r, Byte g, Byte b)
     {
         return Color(a, r, g, b);
     }
-    static Color FromRgba(byte r, byte g, byte b, byte a)
+    static Color FromRgba(Byte r, Byte g, Byte b, Byte a)
     {
         return Color(a, r, g, b);
     }
-    static Color FromGbar(byte g, byte b, byte a, byte r)
+    static Color FromGbar(Byte g, Byte b, Byte a, Byte r)
     {
         return Color(a, r, g, b);
     }
-    static Color FromBarg(byte b, byte a, byte r, byte g)
+    static Color FromBarg(Byte b, Byte a, Byte r, Byte g)
     {
         return Color(a, r, g, b);
     }
-    static byte Clamp(const int value)
+    static Byte Clamp(const int value)
     {
         if (value > 255)
-            return 255;
+            return (Byte)255;
         else if (value < 0)
-            return 0;
+            return (Byte)0;
         else
-            return value;
+            return (Byte)value;
     }
     Color operator+(Color col)
     {
         return Color(
-            Clamp(A + col.A),
+            Clamp((int)A + (int)col.A),
             Clamp((int)(R * ((float)A / 255)) + (int)(col.R * ((float)col.A / 255))),
             Clamp((int)(G * ((float)A / 255)) + (int)(col.G * ((float)col.A / 255))),
             Clamp((int)(B * ((float)A / 255)) + (int)(col.B * ((float)col.A / 255))));
@@ -68,7 +70,7 @@ public:
     Color operator-(Color col)
     {
         return Color(
-            Clamp(A + col.A),
+            Clamp((int)A + (int)col.A),
             Clamp((int)(R * ((float)A / 255)) - (int)(col.R * ((float)col.A / 255))),
             Clamp((int)(G * ((float)A / 255)) - (int)(col.G * ((float)col.A / 255))),
             Clamp((int)(B * ((float)A / 255)) - (int)(col.B * ((float)col.A / 255))));
@@ -76,7 +78,7 @@ public:
     Color operator*(Color col)
     {
         return Color(
-            Clamp(A + col.A),
+            Clamp((int)A + (int)col.A),
             Clamp((int)((R * ((float)A / 255)) + (R * ((float)A / 255)) * (int)(col.R * ((float)col.A / 255)) / 255)),
             Clamp((int)((G * ((float)A / 255)) + (G * ((float)A / 255)) * (int)(col.G * ((float)col.A / 255)) / 255)),
             Clamp((int)((B * ((float)A / 255)) + (B * ((float)A / 255)) * (int)(col.B * ((float)col.A / 255)) / 255)));
@@ -84,7 +86,7 @@ public:
     Color operator&(Color col)
     {
         return Color(
-            Clamp(A + col.A),
+            Clamp((int)A + (int)col.A),
             Clamp((int)((R * ((float)A / 255)) + (int)(col.R * ((float)col.A / 255)) / 2)),
             Clamp((int)((G * ((float)A / 255)) + (int)(col.G * ((float)col.A / 255)) / 2)),
             Clamp((int)((B * ((float)A / 255)) + (int)(col.B * ((float)col.A / 255)) / 2)));
@@ -92,7 +94,7 @@ public:
     Color operator<(Color col)
     {
         return Color(
-            Clamp(A + col.A),
+            Clamp((int)A + (int)col.A),
             Clamp(min((int)(R * ((float)A / 255)), (int)(col.R * ((float)col.A / 255)))),
             Clamp(min((int)(G * ((float)A / 255)), (int)(col.G * ((float)col.A / 255)))),
             Clamp(min((int)(B * ((float)A / 255)), (int)(col.B * ((float)col.A / 255)))));
@@ -100,7 +102,7 @@ public:
     Color operator>(Color col)
     {
         return Color(
-            Clamp(A + col.A),
+            Clamp((int)A + (int)col.A),
             Clamp(max((int)(R * ((float)A / 255)), (int)(col.R * ((float)col.A / 255)))),
             Clamp(max((int)(G * ((float)A / 255)), (int)(col.G * ((float)col.A / 255)))),
             Clamp(max((int)(B * ((float)A / 255)), (int)(col.B * ((float)col.A / 255)))));
@@ -122,7 +124,7 @@ double* ExpectationAndVariance(double* X, int count)
     return EAV;
 }
 
-std::vector<std::vector<std::vector<long double>>> IntegralImage(byte* bgrAValues, int* size)
+std::vector<std::vector<std::vector<long double>>> IntegralImage(Byte* bgrAValues, int* size)
 {
     std::vector<std::vector<long double>> II1 = {};
     std::vector<std::vector<long double>> II2 = {};
@@ -161,7 +163,7 @@ std::vector<std::vector<std::vector<long double>>> IntegralImage(byte* bgrAValue
     return result;
 }
 
-byte partition(byte arr[], int l, int r)
+Byte partition(Byte arr[], int l, int r)
 {
     int x = arr[r], i = l;
     for (int j = l; j <= r - 1; j++) {
@@ -173,7 +175,7 @@ byte partition(byte arr[], int l, int r)
     std::swap(arr[i], arr[r]);
     return i;
 }
-byte kthSmallest(byte arr[], int l, int r, int k)
+Byte kthSmallest(Byte arr[], int l, int r, int k)
 {
     if (k > 0 && k <= r - l + 1) {
 
@@ -232,6 +234,83 @@ vector<complex<double>> FDFT(const vector<complex<double>>& x, int x0, int N, in
             G[k + N / 2] = t - tmp * G[k + N / 2];
         }
     }
+
+    return G;
+}
+
+vector<vector<complex<double>>> for_each_2d_fdft(const vector<vector<complex<double>>>& x, int direction = 1)
+{
+    complex<double> height(x.size(), 0), width(x[0].size(), 0);
+    vector<vector<complex<double>>> G(x.size());
+    vector<vector<complex<double>>> G1(x[0].size(), vector<complex<double>>(x.size()));
+    
+    transform(execution::par_unseq,
+        x.begin(),
+        x.end(),
+        G.begin(),
+        [&](vector<complex<double>> item)
+        {
+            return FDFT(item, 0, (int)item.size(), 1);
+        }
+    );
+    for (size_t i = 0; i < x[0].size(); ++i) {
+        for (size_t j = 0; j < x.size(); ++j) {
+			G1[i][j] = direction == 1? G[j][i] / width : G[j][i];
+        }
+    }
+	
+    transform(execution::par_unseq,
+        G1.begin(),
+        G1.end(),
+        G1.begin(),
+        [&](vector<complex<double>> item)
+        {
+            return FDFT(item, 0, (int)item.size(), 1);
+        }
+    );
+	
+    for (size_t i = 0; i < x.size(); ++i) {
+        for (size_t j = 0; j < x[0].size(); ++j) {
+            G[i][j] = direction == 1 ? G1[j][i] / height : G1[j][i];
+        }
+    }
+
+    /*for (size_t i = 0; i < x.size(); ++i) {
+        auto& elem = *(x.begin() + i);
+
+        auto rez = FDFT(x[i], 0, (int)x[i].size(), 1);
+        for(size_t j = 0; j < x[0].size(); ++j)
+            G1[j].push_back(rez[j] / width);
+    }
+    for (size_t i = 0; i < G1.size(); ++i) {
+
+        auto& elem = *(G1.begin() + i);
+
+        auto rez = FDFT(G1[i], 0, (int)G1[i].size(), 1);
+        for (size_t j = 0; j < G1[0].size(); ++j)
+            G[j].push_back(rez[j] / height);
+    }
+	
+    for_each(execution::par_unseq,
+        x.begin(),
+        x.end(),
+        [&](auto item)
+        {
+            auto rez = FDFT(item, 0, (int)item.size(), 1);
+            for (size_t j = 0; j < item.size(); ++j)
+                G1[j][i] = rez[j] / width;
+        }
+    );
+    for_each(execution::par_unseq,
+        G1.begin(),
+        G1.end(),
+        [&](auto item)
+        {
+            auto rez = FDFT(item, 0, (int)item.size(), 1);
+            for (size_t j = 0; j < item.size(); ++j)
+                G[j][i] = rez[j] / width;
+        }
+    );*/
 
     return G;
 }
@@ -315,7 +394,7 @@ vector<vector<vector<complex<double>>>> two_three_DFT(const vector<vector<vector
 
 extern "C"
 {
-    __declspec(dllexport) void __stdcall ChangeBytes(byte* basis_bgrAValues, byte* supplement_bgrAValues, int count, int action)
+    __declspec(dllexport) void __stdcall ChangeBytes(Byte* basis_bgrAValues, Byte* supplement_bgrAValues, int count, int action)
     {
         for (int counter = 0; counter < count; counter += 4)
         {
@@ -365,20 +444,20 @@ extern "C"
         }
     }
 
-    __declspec(dllexport) void __stdcall FuncChangeBytes(byte* AbgrValues, int count, int* func, bool flag, int* out_GD)
+    __declspec(dllexport) void __stdcall FuncChangeBytes(Byte* AbgrValues, int count, int* func, bool flag, int* out_GD)
     {
         for (int counter = 0; counter < count && !flag; counter += 4)
         {
-            AbgrValues[counter] = (byte)func[AbgrValues[counter]];
-            AbgrValues[counter + 1] = (byte)func[AbgrValues[counter + 1]];
-            AbgrValues[counter + 2] = (byte)func[AbgrValues[counter + 2]];
+            AbgrValues[counter] = (Byte)func[AbgrValues[counter]];
+            AbgrValues[counter + 1] = (Byte)func[AbgrValues[counter + 1]];
+            AbgrValues[counter + 2] = (Byte)func[AbgrValues[counter + 2]];
 
             int c = (AbgrValues[counter] + AbgrValues[counter + 1] + AbgrValues[counter + 2]) / 3;
             out_GD[c] = out_GD[c] + 1;
         }
     }
 
-    __declspec(dllexport) void __stdcall GetGraphData(byte* bgrAValues, int count, int* out_GD)
+    __declspec(dllexport) void __stdcall GetGraphData(Byte* bgrAValues, int count, int* out_GD)
     {
         for (int counter = 0; counter < count; counter += 4)
         {
@@ -387,7 +466,7 @@ extern "C"
         }
     }
 
-    __declspec(dllexport) void __stdcall AverageBrightness(byte* bgrAValues, int count, int* out_t)
+    __declspec(dllexport) void __stdcall AverageBrightness(Byte* bgrAValues, int count, int* out_t)
     {
         int S = 0;
         for (int counter = 0; counter < count; counter += 4)
@@ -427,7 +506,7 @@ extern "C"
         }
     }
 
-    __declspec(dllexport) void __stdcall GlobalBinarize(byte* bgrAValues, int count, int t)
+    __declspec(dllexport) void __stdcall GlobalBinarize(Byte* bgrAValues, int count, int t)
     {
         for (int counter = 0; counter < count; counter += 4)
         {
@@ -437,7 +516,7 @@ extern "C"
         }
     }
 
-    __declspec(dllexport) void __stdcall LocalBinarize(byte* bgrAValues, int* size, int a, float k, int version)
+    __declspec(dllexport) void __stdcall LocalBinarize(Byte* bgrAValues, int* size, int a, float k, int version)
     {
         std::vector<std::vector<std::vector<long double>>> IIs = IntegralImage(bgrAValues, size);
 
@@ -520,9 +599,9 @@ extern "C"
         }
     }
 
-    __declspec(dllexport) void __stdcall LineFilter(byte* bgrAValues, int* size, double* M, int a, int b, long double* out_test)
+    __declspec(dllexport) void __stdcall LineFilter(Byte* bgrAValues, int* size, double* M, int a, int b, long double* out_test)
     {
-        std::queue<std::vector<byte>> S = {};
+        std::queue<std::vector<Byte>> S = {};
         for (int i = 0; i < size[0]; ++i)
         {
             for (int j = 0; j < size[1]; ++j)
@@ -553,7 +632,7 @@ extern "C"
                     }
                 }
 
-                std::vector<byte> tmpS = { Color::Clamp(round(sum[0])), Color::Clamp(round(sum[1])), Color::Clamp(round(sum[2])) };
+                std::vector<Byte> tmpS = { Color::Clamp(round(sum[0])), Color::Clamp(round(sum[1])), Color::Clamp(round(sum[2])) };
                 out_test[i * size[1] + j] = tmpS[0];
                 S.push(tmpS);
                 tmpS.clear();
@@ -574,9 +653,9 @@ extern "C"
         }
     }
 
-    __declspec(dllexport) void __stdcall MedianFilter(byte* bgrAValues, int* size, int a, int b, long double* out_test)
+    __declspec(dllexport) void __stdcall MedianFilter(Byte* bgrAValues, int* size, int a, int b, long double* out_test)
     {
-        std::queue<std::vector<byte>> S = {};
+        std::queue<std::vector<Byte>> S = {};
         for (int i = 0; i < size[0]; ++i)
         {
             for (int j = 0; j < size[1]; ++j)
@@ -589,9 +668,9 @@ extern "C"
                     S.pop();
                 }
 
-                std::vector<byte> data1 = {};
-                std::vector<byte> data2 = {};
-                std::vector<byte> data3 = {};
+                std::vector<Byte> data1 = {};
+                std::vector<Byte> data2 = {};
+                std::vector<Byte> data3 = {};
 
                 for (int it = 0; it < a; ++it)
                 {
@@ -639,7 +718,7 @@ extern "C"
         }
     }
 
-    __declspec(dllexport) void __stdcall GetDFT(byte* bgrAValues, int* size, double* out_DFTone, double* out_DFTtwo, double* max)
+    __declspec(dllexport) void __stdcall GetDFT(Byte* bgrAValues, int* size, double* out_DFTone, double* out_DFTtwo, double* max)
     {
         vector<vector<vector<complex<double>>>> x(3);
         double maxB = 0, maxG = 0, maxR = 0;
@@ -658,7 +737,20 @@ extern "C"
             x[2].push_back(tmp[2]);
         }
 
-        vector<vector<vector<complex<double>>>> G = two_three_DFT(x);
+        //vector<vector<vector<complex<double>>>> G = two_three_DFT(x);
+    	
+        vector<vector<vector<complex<double>>>> G(3);
+
+        transform(execution::par_unseq,
+            x.begin(),
+            x.end(),
+            G.begin(),
+            [&](vector<vector<complex<double>>> item)
+            {
+                return for_each_2d_fdft(item);
+            }
+        );
+    	
         //throw "Here there are no errors";
 
         for (int i = 0; i < size[0]; ++i)
@@ -691,7 +783,7 @@ extern "C"
 
     }
 
-    __declspec(dllexport) void __stdcall ImageFromDFT(byte* bgrAValues, int* size, double* DFTone, double* DFTtwo)
+    __declspec(dllexport) void __stdcall ImageFromDFT(Byte* bgrAValues, int* size, double* DFTone, double* DFTtwo)
     {
         vector<vector<vector<complex<double>>>> x(3);
 
@@ -714,7 +806,19 @@ extern "C"
             x[2].push_back(tmp[2]);
         }
 
-        vector<vector<vector<complex<double>>>> G = two_three_DFT(x, -1);
+        //vector<vector<vector<complex<double>>>> G = two_three_DFT(x, -1);
+
+        vector<vector<vector<complex<double>>>> G(3);
+
+        transform(execution::par_unseq,
+            x.begin(),
+            x.end(),
+            G.begin(),
+            [&](vector<vector<complex<double>>> item)
+            {
+                return for_each_2d_fdft(item, -1);
+            }
+        );
 
         //throw "Here there are no errors";
         for (int i = 0; i < size[0]; ++i)

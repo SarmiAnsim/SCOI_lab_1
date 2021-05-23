@@ -1025,6 +1025,8 @@ namespace SCOI_lab_1
             VisualK.Enabled = true;
             ChFilter.Enabled = true;
             ChFLoadBut.Enabled = true;
+
+            (panel2.Controls[0] as MyFCanvas).RefreshFurierObr();
         }
         private async void ChFilterAsync(Image FTImage)
         {
@@ -1100,6 +1102,11 @@ namespace SCOI_lab_1
         }
 
         private void FilterType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            (panel2.Controls[0] as MyFCanvas).RefreshFurierObr();
+        }
+
+        private void nUDN_ValueChanged(object sender, EventArgs e)
         {
             (panel2.Controls[0] as MyFCanvas).RefreshFurierObr();
         }

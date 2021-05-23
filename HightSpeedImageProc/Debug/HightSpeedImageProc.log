@@ -1,16 +1,17 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(445,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(505,5): warning MSB8004: каталог Output заканчивается не косой чертой.  Этот экземпляр сборки добавит косую черту, поскольку она необходима для правильного определения каталога Output.
   MyLibrary.cpp
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(192,19): warning C4305: return: усечение из "int" в "byte"
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(192,12): warning C4309: return: усечение константного значения
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(395,19): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(556,62): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(556,91): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(556,120): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(686,71): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(687,75): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(688,75): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(724,83): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(725,87): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(726,87): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
-C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(122): warning C4172: возвращение адреса локальной или временной переменной : EAV
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(194,19): warning C4305: return: усечение из "int" в "Byte"
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(194,12): warning C4309: return: усечение константного значения
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(474,19): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(635,62): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(635,91): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(635,120): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(778,71): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(779,75): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(780,75): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(828,83): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(829,87): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(830,87): warning C4244: аргумент: преобразование "double" в "const int", возможна потеря данных
+C:\Users\Mihail\source\repos\SCOI_lab_1\HightSpeedImageProc\MyLibrary.cpp(124): warning C4172: возвращение адреса локальной или временной переменной : EAV
+     Создается библиотека C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\bin\Debug\HightSpeedImageProc.lib и объект C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\bin\Debug\HightSpeedImageProc.exp
   HightSpeedImageProc.vcxproj -> C:\Users\Mihail\source\repos\SCOI_lab_1\SCOI_lab_1\bin\Debug\HightSpeedImageProc.dll
