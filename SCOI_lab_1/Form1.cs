@@ -977,7 +977,7 @@ namespace SCOI_lab_1
         private void ChFilter_Click(object sender, EventArgs e)
         {
             ChFilter.Enabled = false;
-            ChFilterAsync(new Bitmap(FourierTransform.Image));
+            ChFilterAsync(new Bitmap(FourierTransform.Image, filter.Item1.Size));
         }
 
         private void VisualK_ValueChanged(object sender, EventArgs e)
@@ -1013,7 +1013,7 @@ namespace SCOI_lab_1
                 if ((panel2.Controls[0] as MyFCanvas).FourierTransform != null)
                     (panel2.Controls[0] as MyFCanvas).FourierTransform.Dispose();
                 (panel2.Controls[0] as MyFCanvas).FourierTransform = new Bitmap(tmpidd.Item1, (panel2.Controls[0] as MyFCanvas).Size);
-                (panel2.Controls[0] as MyFCanvas).NewFilterSize(tmpidd.Item1.Size);
+                (panel2.Controls[0] as MyFCanvas).NewFilterSize((panel2.Controls[0] as MyFCanvas).Size);
 
                 if(filter.Item1 != null)
                     filter.Item1.Dispose();
